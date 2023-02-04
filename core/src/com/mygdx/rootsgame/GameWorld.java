@@ -26,8 +26,8 @@ public class GameWorld {
 		String worldSeed = Reader.readStringFromFile("tiles.txt");
 		for(int y = 0; y < worldSizeY; y++) {
 			for(int x = 0; x < worldSizeX; x++) {
-					World[x][y] = getTileFromChar(worldSeed.charAt(x + (y*worldSizeX)));
-					World[x][y].SetGridLocation(x, y);
+					World[x][worldSizeY - y - 1] = getTileFromChar(worldSeed.charAt(x + (y*worldSizeX)));
+					World[x][worldSizeY - y - 1].SetGridLocation(x, worldSizeY - y - 1);
 			}
 		}
 		initializeEntities();
@@ -49,7 +49,7 @@ public class GameWorld {
 		String entitySeed = Reader.readStringFromFile("entities.txt");
 		for(int y = 0; y < worldSizeY; y++) {
 			for(int x = 0; x < worldSizeX; x++) {
-					World[x][y].SetSurfaceEntity(getEntityFromChar(entitySeed.charAt(x + (y*worldSizeX)),x,y));
+					World[x][worldSizeY - y - 1].SetSurfaceEntity(getEntityFromChar(entitySeed.charAt(x + ((worldSizeY - y - 1)*worldSizeX)),x,worldSizeY - y - 1));
 			}
 		}
 		initialized = true;
