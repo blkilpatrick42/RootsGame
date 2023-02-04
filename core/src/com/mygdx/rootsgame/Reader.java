@@ -8,7 +8,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.Gdx;
 
-public class TextureReader {
+public class Reader {
 	
 	static String sheetName = "roots_devtiles.png";
     private static File locFile;
