@@ -15,6 +15,14 @@ public abstract class WorldObject {
 	public void ExecuteRules(GameWorld inputWorld) {
 		return;
 	}
+	
+	public Object clone(){  
+	    try{  
+	        return super.clone();  
+	    }catch(Exception e){ 
+	        return null; 
+	    }
+	}
 		
 	//sets the grid location of this object (note: does not change location of the thing, merely lets
 	//the object know where it is)
