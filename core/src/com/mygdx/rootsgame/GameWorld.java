@@ -11,6 +11,8 @@ public class GameWorld {
 	int worldSizeX;
 	int worldSizeY;
 	
+	//TODO: static FutureWorldMember
+	
 	//gameworld constructor which creates a game world of xSize tiles wide and ySize tiles high
 	public GameWorld(int xSize, int ySize) {
 		World = new Tile[xSize][ySize];
@@ -27,6 +29,12 @@ public class GameWorld {
 				if(x % 2 == 0) {
 					World[x][y] = new Soil();
 					World[x][y].SetGridLocation(x, y);
+					if(x % 6 == 0) {
+						World[x][y].SetSurfaceEntity(new RedFlower(x,y));
+					}
+					if(x % 7 == 0) {
+						World[x][y].SetSurfaceEntity(new YellowFlower(x,y));
+					}
 				}
 				else {
 					World[x][y] = new Water();
@@ -38,13 +46,12 @@ public class GameWorld {
 	}
 	
 	//Advances the world clock by one tick
-	public void advanceClock() {
+	public void AdvanceClock() {
 		clock++;
 		try {
-			GameWorld currentWorld = (GameWorld)this.clone();
 			for(Tile[] tiles: World) {
 				for(Tile tile: tiles) {
-					tile.Tick(currentWorld);
+					tile.AdvanceClock(this);
 				}
 			}
 		}

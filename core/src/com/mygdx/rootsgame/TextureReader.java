@@ -4,7 +4,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.Gdx;
 
-public class Reader {
+public class TextureReader {
 	
 	static String sheetName = "roots_devtiles.png";
 	
