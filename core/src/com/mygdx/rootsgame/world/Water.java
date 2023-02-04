@@ -9,4 +9,8 @@ public class Water extends Tile {
 	public Water() {
 		aspect = new VisualAspect(Reader.GetSpriteSheet(),3,0,16);
 	}
+	
+	public String GetIdentity() {
+		return this.identity;
+	}
 }

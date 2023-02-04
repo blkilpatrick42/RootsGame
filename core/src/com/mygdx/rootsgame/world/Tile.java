@@ -6,10 +6,13 @@ import com.mygdx.rootsgame.entities.*;
 public abstract class Tile extends WorldObject{
 	public VisualAspect aspect;
 	public Entity surfaceEntity;
-	public static String identity = "nullTile";	
+	public static String identity = "nullWorldObject";	
 	
-	public void AdvanceClock(GameWorld inputWorld){	
-		surfaceEntity.AdvanceClock(inputWorld);
+	public void AdvanceClock(){	
+		ExecuteRules();
+		if(surfaceEntity != null) {
+			surfaceEntity.AdvanceClock();
+		}
 		age++;
 	}
 	
