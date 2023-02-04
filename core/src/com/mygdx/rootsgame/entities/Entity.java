@@ -7,8 +7,8 @@ public abstract class Entity extends WorldObject{
 	
 	public static String identity = "nullEntity";
 	
-	public void AdvanceClock(GameWorld inputWorld){
-		ExecuteRules(inputWorld);
+	public void AdvanceClock(){
+		ExecuteRules();
 		age++;
 	}
 }

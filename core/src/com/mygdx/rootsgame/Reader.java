@@ -11,16 +11,11 @@ import com.badlogic.gdx.Gdx;
 public class Reader {
 	
 	static String sheetName = "roots_devtiles.png";
+	static Texture SpriteSheet = new Texture(sheetName);
     private static File locFile;
-	
-	//Method for generating a texture from a given String
-    public static Texture getTexture(String inName){
-        Texture tempTex = new Texture(inName);
-        return tempTex;
-    }
     
     public static Texture GetSpriteSheet() {
-    	return getTexture(sheetName);
+    	return SpriteSheet;
     }
     
    	public static String readStringFromFile(String fileName){

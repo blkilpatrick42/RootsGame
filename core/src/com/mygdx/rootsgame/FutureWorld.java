@@ -11,7 +11,7 @@ public class FutureWorld {
 	
 	public FutureWorld(GameWorld basis) {
 		OldWorld = basis;
-		int[][] precedence = new int[basis.worldSizeX][basis.worldSizeY];
+		precedence = new int[basis.worldSizeX][basis.worldSizeY];
 		for (int[] column: precedence) {
 			Arrays.fill(column, 0);
 		}
@@ -20,7 +20,7 @@ public class FutureWorld {
 
 		for (Tile[] tiles: basis.World) {
 			for(Tile tile: tiles) {
-				newWorld[tile.gridX][tile.gridY] = (Tile)tile.clone();
+				newWorld[tile.gridX][tile.gridY] = tile;
 			}
 		}	
 	}
@@ -28,7 +28,7 @@ public class FutureWorld {
 	public void SubmitFutureTile(int newPrecedence, Tile replacement, int x, int y){
 		//if the tile future comes without an entity, just keep the existing one
 		if(replacement.surfaceEntity == null) {
-			replacement.surfaceEntity = (Entity)newWorld[x][y].surfaceEntity.clone();
+			replacement.surfaceEntity = newWorld[x][y].surfaceEntity;
 		}
 		
 		if(newPrecedence > precedence[x][y]) {

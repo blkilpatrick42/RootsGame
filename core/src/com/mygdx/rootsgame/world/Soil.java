@@ -8,4 +8,8 @@ public class Soil extends Tile {
 	public Soil() {
 		aspect = new VisualAspect(Reader.GetSpriteSheet(),2,0,16);
 	}
+	
+	public String GetIdentity() {
+		return this.identity;
+	}
 }
