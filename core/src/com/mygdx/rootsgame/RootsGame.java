@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.mygdx.rootsgame.world.*;
 import com.mygdx.rootsgame.entities.*;
+import com.mygdx.rootsgame.util.DiceRoller;
 
 public class RootsGame extends ApplicationAdapter {
 	SpriteBatch batch;
