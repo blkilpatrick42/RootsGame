@@ -8,6 +8,7 @@ public class FutureWorld {
 	GameWorld OldWorld;
 	public Tile[][] newWorld;
 	int[][] precedence;	
+	public boolean readyToAdvance = false;
 	
 	public FutureWorld(GameWorld basis) {
 		OldWorld = basis;
@@ -17,12 +18,12 @@ public class FutureWorld {
 		}
 		
 		newWorld = new Tile[basis.worldSizeX][basis.worldSizeY];
-
+		
 		for (Tile[] tiles: basis.World) {
 			for(Tile tile: tiles) {
 				newWorld[tile.gridX][tile.gridY] = tile;
 			}
-		}	
+		}
 	}
 	
 	public void SubmitFutureTile(int newPrecedence, Tile replacement, int x, int y){

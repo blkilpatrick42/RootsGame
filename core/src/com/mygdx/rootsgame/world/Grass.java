@@ -19,7 +19,7 @@ public class Grass extends Tile {
 		int numFlowers = AdjacentTilesHaveEntity(Flower.identity);
 		int numWaters = AdjacentTilesHaveIdentity(Water.identity);
 		int chanceModifier = 10 - numFlowers;
-		int liveChanceModifier = 2 + numWaters*3;
+		int liveChanceModifier = 3 + numWaters*3;
 		
 		//get adjacent tiles
 		Tile adjacentNorth = GetAdjacentTile(TileDir.north);

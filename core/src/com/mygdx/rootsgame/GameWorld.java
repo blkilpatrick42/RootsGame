@@ -91,7 +91,7 @@ public class GameWorld {
     public void sleep(int fps) {
         if (fps > 0) {
             diff = System.currentTimeMillis() - start;
-            long targetDelay = 1000 / fps;
+            long targetDelay = 1000;
             if (diff < targetDelay) {
                 try {
                     Thread.sleep(targetDelay - diff);
@@ -107,7 +107,6 @@ public class GameWorld {
 		sleep(GetTimeSpeed(TimeSpeed.slow));
 		NextWorldState = new FutureWorld(this);
 		clock++;
-		
 		//run rules for all entities in the grid, which will all make
 		//calls to influence the static FutureWorld member NextWorldState
 		for(Tile[] tiles: World) {
@@ -115,8 +114,11 @@ public class GameWorld {
 				tile.AdvanceClock();
 			}
 		}	
+		NextWorldState.readyToAdvance = true;
+		
 		
 		//swap the current game world with the future world
-		World = NextWorldState.newWorld;
+		if(NextWorldState.readyToAdvance)
+			World = NextWorldState.newWorld;
 	}
 }
