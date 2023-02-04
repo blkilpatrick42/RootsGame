@@ -26,8 +26,8 @@ public class GameWorld {
 		String worldSeed = Reader.readStringFromFile("test.txt");
 		for(int y = 0; y < worldSizeY; y++) {
 			for(int x = 0; x < worldSizeX; x++) {
-					World[x][y] = getTileFromChar(worldSeed.charAt(x + (y*worldSizeX)));
-					World[x][y].SetGridLocation(x, y);
+					World[x][worldSizeY - y - 1] = getTileFromChar(worldSeed.charAt(x + (y*worldSizeX)));
+					World[x][worldSizeY - y - 1].SetGridLocation(x, worldSizeY - y - 1);
 			}
 		}
 		initialized = true;
