@@ -8,8 +8,8 @@ public class GameWorld {
 	boolean initialized = false;
 	int clock;
 	
-	int worldSizeX;
-	int worldSizeY;
+	public int worldSizeX;
+	public int worldSizeY;
 	
 	//TODO: static FutureWorldMember
 	
@@ -42,6 +42,25 @@ public class GameWorld {
 			return new Grass();
 		else
 			return new Soil();
+	}
+	
+	public void initializeE() {
+		String entitySeed = Reader.readStringFromFile("test2.txt");
+		for(int y = 0; y < worldSizeY; y++) {
+			for(int x = 0; x < worldSizeX; x++) {
+					World[x][y].SetSurfaceEntity(getEntityFromChar(entitySeed.charAt(x + (y*worldSizeX)),x,y));
+			}
+		}
+		initialized = true;
+	}
+	
+	private Entity getEntityFromChar(char tileChar, int x, int y) {
+		if(tileChar == 'R')
+			return new RedFlower(x,y);
+		if(tileChar == 'Y')
+			return new YellowFlower(x,y);
+		else
+			return null;
 	}
 
 	//Advances the world clock by one tick
