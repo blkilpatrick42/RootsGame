@@ -61,13 +61,15 @@ public class RootsGame extends ApplicationAdapter {
 	
 	public long diff, start = System.currentTimeMillis(); //gets current system time in Millisecs
 	int slowSpeed = 1;
-	int mediumSpeed = 2;
-	int fastSpeed = 3;
+	int mediumSpeed = 3;
+	int fastSpeed = 9;
 	public enum TimeSpeed{
 		slow,
 		medium,
 		fast
 	}
+	
+	public TimeSpeed gameSpeed = TimeSpeed.slow;
 	
 	public int GetTimeSpeed(TimeSpeed speed) {
 		int retSpeed = 0;
@@ -114,14 +116,32 @@ public class RootsGame extends ApplicationAdapter {
 		DrawGameWorld(Game);
 		DrawCursor();
 			DrawGameWorld(Game);
+			if(timePaused) {
+				DrawCursor();
+			}
 		batch.end();
 		
 		//if time is unpaused, advance it at given speed
 		if(!timePaused) {
 			Game.AdvanceClock();
-			sleep(GetTimeSpeed(TimeSpeed.slow));
+			sleep(GetTimeSpeed(gameSpeed));
 			Gdx.graphics.requestRendering();
 		}
+		
+		if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)&& timePaused) {
+			Game.AdvanceClock();
+			Gdx.graphics.requestRendering();
+		}
+		
+		if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_1)&& !timePaused) 
+			gameSpeed = TimeSpeed.slow;
+		
+		if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_2)&& !timePaused) 
+			gameSpeed = TimeSpeed.medium;
+		
+		if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_3)&& !timePaused) 
+			gameSpeed = TimeSpeed.fast;
+		
 		
 		//enter toggles game pause
 		if (Gdx.input.isKeyJustPressed(Input.Keys.ENTER))
@@ -131,21 +151,17 @@ public class RootsGame extends ApplicationAdapter {
 		if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)&& timePaused)
 			Game.AdvanceClock();	
 		
-		if(Gdx.input.isKeyJustPressed(Input.Keys.UP) && cursor.locY+1 < Game.worldSizeY) {
+		if(Gdx.input.isKeyJustPressed(Input.Keys.UP) && timePaused && cursor.locY+1 < Game.worldSizeY) {
 			cursor.locY = cursor.locY + 1;
 		}
-		if(Gdx.input.isKeyJustPressed(Input.Keys.DOWN) && cursor.locY-1 >= 0) {
+		if(Gdx.input.isKeyJustPressed(Input.Keys.DOWN) && timePaused && cursor.locY-1 >= 0) {
 			cursor.locY = cursor.locY - 1;
 		}
-		if(Gdx.input.isKeyJustPressed(Input.Keys.LEFT) && cursor.locX-1 >= 0) {
+		if(Gdx.input.isKeyJustPressed(Input.Keys.LEFT) && timePaused && cursor.locX-1 >= 0) {
 			cursor.locX = cursor.locX - 1;
 		}
-		if(Gdx.input.isKeyJustPressed(Input.Keys.RIGHT) && cursor.locX+1 < Game.worldSizeX) {
+		if(Gdx.input.isKeyJustPressed(Input.Keys.RIGHT) && timePaused && cursor.locX+1 < Game.worldSizeX) {
 			cursor.locX = cursor.locX + 1;
-		}
-		if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)&& timePaused) {
-			Game.AdvanceClock();
-			Gdx.graphics.requestRendering();
 		}
 	}
 	
