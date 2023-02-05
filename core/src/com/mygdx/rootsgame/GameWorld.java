@@ -58,12 +58,16 @@ public class GameWorld {
 	private Entity getEntityFromChar(char tileChar, int x, int y) {
 		if(tileChar == 'R')
 			return new RedFlower(x,y);
-		if(tileChar == 'Y')
+	    if(tileChar == 'Y')
 			return new YellowFlower(x,y);
-		if(tileChar == 'S')
+	    if(tileChar == 'S')
 			return new ShrubSapling(x,y);
-		if(tileChar == 'O')
+	    if(tileChar == 'O')
 			return new Rock(x,y);
+	    if (tileChar == 'P')
+			return new PineSapling(x,y);
+	    if (tileChar == 'V')
+			return new Vine(x,y);
 		else
 			return null;
 	}
