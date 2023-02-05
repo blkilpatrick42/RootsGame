@@ -3,7 +3,7 @@ package com.mygdx.rootsgame.entities;
 import com.mygdx.rootsgame.Reader;
 import com.mygdx.rootsgame.VisualAspect;
 
-public class Rock extends Flower{
+public class Rock extends Entity{
 	public static String identity = "Rock";
 	
 	public Rock(int x, int y) {

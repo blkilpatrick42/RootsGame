@@ -109,14 +109,19 @@ public class Flower extends Entity{
 		switch(FlowerState) {
 			case 0:
 				stateString = "Sprout";
+				break;
 			case 1:
 				stateString = "Bloom1";
+				break;
 			case 2:
 				stateString = "Bloom2";
+				break;
 			case 3:
 				stateString = "Bloom3";
+				break;
 			case 4:
 				stateString = "Decay";
+				break;
 		}
 		return stateString;
 	}
@@ -129,146 +134,25 @@ public class Flower extends Entity{
 		this.FlowerState = newState;
 	}
 	
-	public int[] CountNeighborColors() {
-		//init an array with one value per flower color
-		int[] neighborColors = new int[7];
-		
-		//made up OO bullshit
-		ArrayList<Entity> entities = new ArrayList<Entity>(8);
-		ArrayList<Tile> tiles = GetAdjacentTiles(1);
-		
-		for (Tile t : tiles) {
-			if(t != null) {
-				entities.add(t.surfaceEntity);
-			}
-		}
-
-		for(Entity e : entities){
-			if(e != null && e.GetIdentity().contains(Flower.identity)) {
-				Flower f = (Flower)e;
-				//If flower is in bloom
-				if(f.FlowerState > 0 && f.FlowerState < 4) {
-					//Add to count for its color
-					switch(f.FlowerColor) {
-						case 'R':
-							neighborColors[0]++;
-							break;
-						case 'B':
-							neighborColors[1]++;
-							break;
-						case 'Y':
-							neighborColors[2]++;
-							break;
-						case 'P':
-							neighborColors[3]++;
-							break;
-						case 'O':
-							neighborColors[4]++;
-							break;
-						case 'G':
-							neighborColors[5]++;
-							break;
-						case 'W':
-							neighborColors[6]++;
-							break;
-					}
-				}
-			}
-		}
-				
-		return neighborColors;
-	}
-	
 	public void ExecuteRules() {
-		int numFlowers = AdjacentTilesHaveEntity(Flower.identity);
-		int numWaters = AdjacentTilesHaveIdentity(Water.identity);
-		//int chanceModifier = 9 - numFlowers;
-		//int liveChanceModifier = 8 + numWaters*5;
-		
-		//get adjacent tiles
-		Tile adjacentNorth = GetAdjacentTile(TileDir.north);
-		Tile adjacentNorthEast = GetAdjacentTile(TileDir.northEast);
-		Tile adjacentEast = GetAdjacentTile(TileDir.east);
-		Tile adjacentSouthEast = GetAdjacentTile(TileDir.southEast);
-		Tile adjacentSouth = GetAdjacentTile(TileDir.south);
-		Tile adjacentSouthWest = GetAdjacentTile(TileDir.southWest);
-		Tile adjacentWest = GetAdjacentTile(TileDir.west);
-		Tile adjacentNorthWest = GetAdjacentTile(TileDir.northWest);
-		
-		//model flower growth to adjacent tiles
-		int flowerGrowthPrecedence = 1;
-		
-		//count how many adjacent tiles of each color
-		int[] neighborColors = CountNeighborColors();
-		List<String> validSeedList = new ArrayList<>();
-		
-		//If 1+ adjacent water
-		//if(numWaters >= 1) {
-		if(true) {
-			//If current tile is sapling, grow to bloom1
-			
-			//If current tile is bloom, 33% chance to grow to bloom2, bloom3, or decay
-			
-			//Otherwise, if 2+ adjacent flowers, try to plant sprout
-			if(numFlowers >= 2) {
-				//Automatic white seed if 1+ Purple, Orange, Green seed
-				if(neighborColors[0]>=1 && neighborColors[1]>=1 && neighborColors[2]>=1) {
-					validSeedList.add("w");
+
+		switch(FlowerState) {
+			//If sprout, grow to bloom
+			case 0:
+				RootsGame.Game.NextWorldState.SubmitFutureEntity(1, new Flower(gridX, gridY, this.FlowerColor, 1), gridX, gridY);
+				break;
+			//If bloom1-3, 33% chance to grow to next state
+			case 1:
+			case 2:
+			case 3:
+				if(DiceRoller.RollDice(3)) {
+					RootsGame.Game.NextWorldState.SubmitFutureEntity(1, new Flower(gridX, gridY, this.FlowerColor, this.FlowerState + 1), gridX, gridY);
 				}
-				//If no new white, 50% chance to add new seed
-				else if(DiceRoller.RollDice(2)){
-					//Red seed valid if 2+ red neighbors
-					if(neighborColors[0]>=2) {
-						validSeedList.add("r");
-					}
-					//Blue seed valid if 2+ blue neighbors
-					if(neighborColors[1]>=2) {
-						validSeedList.add("b");						
-					}
-
-					//Yellow seed valid if 2+ yellow neighbors
-					if(neighborColors[2]>=2) {
-						validSeedList.add("y");
-					}
-
-					//Purple seed valid if 1+ red and 1+ blue neighbors OR if 2+ purple neighbors
-					if((neighborColors[3]>=2)||(neighborColors[0]>=1 && neighborColors[1]>=1)) {
-						validSeedList.add("p");
-					}
-
-					//Orange seed valid if 1+ red and 1+ yellow neighbors OR 2+ orange neighbors
-					if((neighborColors[4]>=2)||(neighborColors[0]>=1 && neighborColors[2]>=1)) {
-						validSeedList.add("o");
-					}
-
-					//Green seed valid if 1+ blue and 1+ yellow neighbors OR 2+ green neighbors
-					if((neighborColors[5]>=2)||(neighborColors[1]>=1 && neighborColors[2]>=1)) {
-						validSeedList.add("g");
-					}
-
-					//White seed valid if 2+ white neighbors
-					if(neighborColors[6]>=2) {
-						validSeedList.add("w");
-					}
-				}
-
-				//choose random seed from valid options
-				if(validSeedList.size()>0) {
-					int seedIndex = DiceRoller.pickInt(validSeedList.size());
-					String newSeedColorString = validSeedList.get(seedIndex-1);
-					char newSeedColor = newSeedColorString.charAt(0);
-				
-					Flower newFlower  = new Flower(gridX, gridY, newSeedColor, 0);
-					RootsGame.Game.NextWorldState.SubmitFutureEntity(flowerGrowthPrecedence, newFlower, gridX, gridY);
-				}
-				
-				//Add selected seed to futureWorld for this tile
-			}
+				break;
+			//If decaying, disappear
+			case 4:
+				RootsGame.Game.NextWorldState.SubmitFutureEntity(1, null, gridX, gridY);
+				break;
 		}
-		//if no water, and blooming seed exists in square
-		//set plant to decay
-		
-		//if current tile is decay flower, set to disappear next turn
-		
-		}
+	}
 }
