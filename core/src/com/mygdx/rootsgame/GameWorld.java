@@ -62,6 +62,8 @@ public class GameWorld {
 			return new YellowFlower(x,y);
 		if(tileChar == 'S')
 			return new ShrubSapling(x,y);
+		if(tileChar == 'O')
+			return new Rock(x,y);
 		else
 			return null;
 	}

@@ -20,12 +20,12 @@ public class Shrub extends Entity{
 	
 	public void ExecuteRules() {
 		int numWaters = AdjacentTilesHaveIdentity(Water.identity);
-		int vitalityMod = 9 - numWaters;
+		int vitalityMod = 1+numWaters*10;
 		//the shrub blooms with berries
-		if(age % 20 == 0 && DiceRoller.RollDice(vitalityMod)) { 
+		if(age % 20 == 0 && DiceRoller.RollDice(10)) { 
 			RootsGame.Game.NextWorldState.SubmitFutureEntity(1, new ShrubWithBerries(gridX,gridY), gridX, gridY);
 		}
-		else if (DiceRoller.RollDice(100) && !DiceRoller.RollDice(vitalityMod)) { //the shrub dies
+		else if (DiceRoller.RollDice(40) && DiceRoller.RollDice(vitalityMod)) { //the shrub dies
 			RootsGame.Game.NextWorldState.SubmitFutureEntity(1, new ShrubDead(gridX,gridY), gridX, gridY);
 		}
 	}
