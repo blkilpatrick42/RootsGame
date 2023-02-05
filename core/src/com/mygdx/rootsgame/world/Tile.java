@@ -95,7 +95,7 @@ public abstract class Tile extends WorldObject{
 					validSeedList.add("w");
 				}
 				//If no new white, 50% chance to add new seed (100% for testing)
-				else if(DiceRoller.RollDice(1)){
+				else if(DiceRoller.RollDice(2)){
 					//Red seed valid if 2+ red neighbors
 					if(neighborColors[0]>=2) {
 						validSeedList.add("r");
