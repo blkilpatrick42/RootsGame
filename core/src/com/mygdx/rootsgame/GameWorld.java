@@ -1,12 +1,13 @@
 package com.mygdx.rootsgame;
-import java.lang.Math;
-
 import com.mygdx.rootsgame.world.*;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.lang.*;
 
 import com.mygdx.rootsgame.entities.*;
+import com.mygdx.rootsgame.util.DiceRoller;
 
 public class GameWorld {
 	public Tile[][] World;
@@ -223,6 +224,10 @@ public class GameWorld {
 				}
 			}
 			riverRoll = (int)((1 - Math.pow((worldArea-riverCount)/worldArea,1))*100);
+			
+
+			char[] FlowerArray = {'R', 'B', 'Y'};
+			char[] EntityArray = {'V', 'T', 'S', 'M'};
 		 //River generation done
 		//Fill remains with soil
 		for(int i = 0; i < worldSizeX; i++) {
@@ -231,15 +236,43 @@ public class GameWorld {
 					if(i+1 < worldSizeX && World[i+1][j] != null && World[i+1][j].GetIdentity().equals("Water")) {
 						World[i][j] = new Grass();
 						World[i][j].SetGridLocation(i, j);
+						if(DiceRoller.RollDice(2)){
+							World[i][j].SetSurfaceEntity(new Flower(i, j, FlowerArray[DiceRoller.pickInt(3) -1], 1));
+						}
 					} else if(i-1 > 0 && World[i-1][j] != null && World[i-1][j].GetIdentity().equals("Water")) {
 						World[i][j] = new Grass();
 						World[i][j].SetGridLocation(i, j);
+						if(DiceRoller.RollDice(2)){
+							World[i][j].SetSurfaceEntity(new Flower(i, j, FlowerArray[DiceRoller.pickInt(3) -1], 1));
+						}
 					}else if(j+1 < worldSizeY && World[i][j+1] != null && World[i][j+1].GetIdentity().equals("Water")) {
 						World[i][j] = new Grass();
 						World[i][j].SetGridLocation(i, j);
+						if(DiceRoller.RollDice(2)){
+							World[i][j].SetSurfaceEntity(new Flower(i, j, FlowerArray[DiceRoller.pickInt(3) -1], 1));
+						}
 					}else if(j-1 > 0 && World[i][j-1] != null && World[i][j-1].GetIdentity().equals("Water")) {
 						World[i][j] = new Grass();
 						World[i][j].SetGridLocation(i, j);
+						if(DiceRoller.RollDice(2)){
+							World[i][j].SetSurfaceEntity(new Flower(i, j, FlowerArray[DiceRoller.pickInt(3) -1], 1));
+						}
+					}
+					else {
+						if(DiceRoller.RollDice(30)){
+							if(EntityArray[DiceRoller.pickInt(4) -1] == 'S') {
+					            World[i][j].SetSurfaceEntity(new ShrubSapling(i,j));
+							}
+							if(EntityArray[DiceRoller.pickInt(4) -1] == 'M') {
+					            World[i][j].SetSurfaceEntity(new Rock(i,j));
+							}
+							if(EntityArray[DiceRoller.pickInt(4) -1] == 'T') {
+					            World[i][j].SetSurfaceEntity(new PineSapling(i,j));
+							}
+							if(EntityArray[DiceRoller.pickInt(4) -1] == 'V') {
+					            World[i][j].SetSurfaceEntity(new Vine(i,j));
+							}
+						}
 					}
 				}
 			}
@@ -314,7 +347,6 @@ public class GameWorld {
 					tile.AdvanceClock();
 			}
 		}	
-		PlacementWorld = World;
 		
 		//swap the current game world with the future world
 		World = NextWorldState.newWorld;
