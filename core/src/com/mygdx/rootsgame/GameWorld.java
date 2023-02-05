@@ -73,7 +73,17 @@ public class GameWorld {
 		case 'W':
 			return new Flower (x,y,tileChar,1);
 		}
-		return null;
+
+	    if(tileChar == 'S')
+			return new ShrubSapling(x,y);
+	    if(tileChar == 'M')
+			return new Rock(x,y);
+	    if (tileChar == 'T')
+			return new PineSapling(x,y);
+	    if (tileChar == 'V')
+			return new Vine(x,y);
+		else
+			return null;
 	}
 
 	//Advances the world clock by one tick

@@ -6,11 +6,11 @@ import com.mygdx.rootsgame.VisualAspect;
 import com.mygdx.rootsgame.util.DiceRoller;
 import com.mygdx.rootsgame.world.Water;
 
-public class ShrubDead extends Entity{
-	public static String identity = "ShrubDead"; 
+public class PineDead extends Entity{
+	public static String identity = "PineDead"; 
 	
-	public ShrubDead(int x, int y) {
-		aspect = new VisualAspect(Reader.GetSpriteSheet(),4,1,16);
+	public PineDead(int x, int y) {
+		aspect = new VisualAspect(Reader.GetSpriteSheet(),8,1,16);
 		SetGridLocation(x,y);
 	}
 	
@@ -19,8 +19,7 @@ public class ShrubDead extends Entity{
 	}
 	
 	public void ExecuteRules() {
-		//the dead shrub disappears
-		if(age > 20 && DiceRoller.RollDice(6)) { 
+		if(age > 20 && DiceRoller.RollDice(2)) { 
 			RootsGame.Game.NextWorldState.SubmitFutureEntity(1, null, gridX, gridY);
 		}
 	}
