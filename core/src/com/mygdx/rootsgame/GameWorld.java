@@ -72,45 +72,63 @@ public class GameWorld {
 				curFlow = "South";
 			}
 			//Determine length and path
-			if(randX + riverWidth > w) {
+			if(randX + riverWidth +1 > w) 
 				randX = randX - riverWidth;
-			}
-			if(randY + riverWidth > h) {
+			if(randX - riverWidth - 1 < 0)
+				randX = randX + riverWidth;
+			if(randY + riverWidth +1 > h) 
 				randY = randY - riverWidth;
-			}
+			if(randY - riverWidth - 1 < 0)
+				randY = randY + riverWidth;
 			flowSwitch = 0;
 			while(flowStop == 0) {
 				//Clearance check
 				if(curFlow.equals("North") || curFlow.equals("South")) {
 					for(clearanceCheck = 0; clearanceCheck < riverWidth; clearanceCheck++) {
-						if(World[randX + clearanceCheck][randY].GetIdentity().equals("Mountain")) {
-							flowStop = 1;
-							break;
+						if(randX + clearanceCheck < w && randX > -1 && randY < h && randY > -1) {
+							if(World[randX + clearanceCheck][randY] != null) {
+								if(World[randX + clearanceCheck][randY].GetIdentity().equals("Mountain")) {
+									flowStop = 1;
+									break;
+								}
+							}
+							World[randX + clearanceCheck][randY] = new Water();
+							World[randX + clearanceCheck][randY].SetGridLocation(randX + clearanceCheck, randY);
 						}
-						World[randX + clearanceCheck][randY] = new Water();
-						World[randX + clearanceCheck][randY].SetGridLocation(randX + clearanceCheck, randY);
 					}
 				}else {
 					for(clearanceCheck = 0; clearanceCheck < riverWidth; clearanceCheck++) {
-						if(World[randX][randY + clearanceCheck].GetIdentity().equals("Mountain")) {
-							flowStop = 1;
-							break;
+						if(randX < w && randX > -1 && randY + clearanceCheck  < h && randY > -1) {
+						if(World[randX + clearanceCheck][randY] != null) {
+							if(World[randX][randY + clearanceCheck].GetIdentity().equals("Mountain")) {
+								flowStop = 1;
+								break;
+							}
 						}
 						World[randX][randY + clearanceCheck] = new Water();
 						World[randX][randY + clearanceCheck].SetGridLocation(randX, randY + clearanceCheck);
+						}
 					}
 				}
-				if(flowStop == 1)
-					break;
 				r = r + riverWidth;
 				if(curFlow.equals("North"))
+					if(randY + 1 >= h || randX + riverWidth >= w)
+						flowStop = 1;
 					randY++;
 				if(curFlow.equals("South"))
+					if(randY - 1 <= -1 || randX + riverWidth >= w)
+						flowStop = 1;
 					randY--;
 				if(curFlow.equals("East"))
+					if(randX + 1 >= w || randY + riverWidth >= h)
+						flowStop = 1;
 					randX++;
 				if(curFlow.equals("West"))
+					if(randX - 1 <= -1 || randY + riverWidth >= h)
+						flowStop = 1;
 					randY--;
+				if(flowStop == 1)
+					break;
 				flowSwitch++;
 				if(flowSwitch == riverWidth) {
 					flowRoll = (int)(Math.random() * 100);
@@ -149,25 +167,33 @@ public class GameWorld {
 			if(flowStop == 2) {
 				for(int i = 0; i < riverWidth; i++) {
 					for(int j = 0; j < riverWidth - i; j++) {
-						if(!World[randX+i][randY+j].GetIdentity().equals("Mountain")) {
-							r++;
-							World[randX+i][randY+j] = new Water();
-							World[randX+i][randY+j].SetGridLocation(randX+i, randY+j);
+						if(randX+i < w && randY + j < h) {
+							if(World[randX+i][randY+j] == null) {
+								r++;
+								World[randX+i][randY+j] = new Water();
+								World[randX+i][randY+j].SetGridLocation(randX+i, randY+j);
+							}
 						}
-						if(!World[randX+i][randY-j].GetIdentity().equals("Mountain")) {
-							r++;
-							World[randX+i][randY-j] = new Water();
-							World[randX+i][randY-j].SetGridLocation(randX+i, randY-j);
+						if(randX+i < w && randY - j > 0) {
+							if(World[randX+i][randY-j] == null) {
+								r++;
+								World[randX+i][randY-j] = new Water();
+								World[randX+i][randY-j].SetGridLocation(randX+i, randY-j);
+							}
 						}
-						if(!World[randX-i][randY+j].GetIdentity().equals("Mountain")) {
-							r++;
-							World[randX-i][randY+j] = new Water();
-							World[randX-i][randY+j].SetGridLocation(randX-i, randY+j);
+						if(randX-i > 0 && randY + j < h) {
+							if(World[randX-i][randY+j] == null) {
+								r++;
+								World[randX-i][randY+j] = new Water();
+								World[randX-i][randY+j].SetGridLocation(randX-i, randY+j);
+							}
 						}
-						if(!World[randX-i][randY-j].GetIdentity().equals("Mountain")) {
-							r++;
-							World[randX-i][randY-j] = new Water();
-							World[randX-i][randY-j].SetGridLocation(randX-i, randY-j);
+						if(randX-i > 0 && randY - j > 0) {
+							if(World[randX-i][randY-j] == null) {
+								r++;
+								World[randX-i][randY-j] = new Water();
+								World[randX-i][randY-j].SetGridLocation(randX-i, randY-j);
+							}
 						}
 					}
 				}
@@ -177,16 +203,23 @@ public class GameWorld {
 		//Fill remains with soil
 		for(int i = 0; i < w; i++) {
 			for(int j = 0; j < h; j++) {
-				if(!World[i][j].GetIdentity().equals("Mountain")) {
-					if(!World[i][j].GetIdentity().equals("Water")) {
+				if(World[i][j] == null) {
 						//I know this is disgusting but bear with me
-						if(World[i+1][j].GetIdentity().equals("Water")||World[i-1][j].GetIdentity().equals("Water")||World[i][j+1].GetIdentity().equals("Water")||World[i][j-1].GetIdentity().equals("Water")) {
-							World[i][j] = new Grass();
-							World[i][j].SetGridLocation(i, j);
-						}else {
+					if(i+1 < w && World[i+1][j] != null && World[i+1][j].GetIdentity().equals("Water")) {
+						World[i][j] = new Grass();
+						World[i][j].SetGridLocation(i, j);
+					} else if(i-1 > 0 && World[i-1][j] != null && World[i-1][j].GetIdentity().equals("Water")) {
+						World[i][j] = new Grass();
+						World[i][j].SetGridLocation(i, j);
+					}else if(j+1 < h && World[i][j+1] != null && World[i][j+1].GetIdentity().equals("Water")) {
+						World[i][j] = new Grass();
+						World[i][j].SetGridLocation(i, j);
+					}else if(j-1 > 0 && World[i][j-1] != null && World[i][j-1].GetIdentity().equals("Water")) {
+						World[i][j] = new Grass();
+						World[i][j].SetGridLocation(i, j);
+					}else {
 						World[i][j] = new Soil();
 						World[i][j].SetGridLocation(i, j);
-						}
 					}
 				}
 			}
