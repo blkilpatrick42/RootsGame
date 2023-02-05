@@ -5,6 +5,7 @@ import com.mygdx.rootsgame.entities.*;
 
 public class GameWorld {
 	public Tile[][] World;
+	public Tile[][] PlacementWorld;
 	boolean initialized = false;
 	int clock;
 	
@@ -31,6 +32,7 @@ public class GameWorld {
 			}
 		}
 		initializeEntities();
+		PlacementWorld = World;
 		initialized = true;
 	}
 	
@@ -82,7 +84,10 @@ public class GameWorld {
 		//calls to influence the static FutureWorld member NextWorldState
 		for(Tile[] tiles: World) {
 			for(Tile tile: tiles) {
-				tile.AdvanceClock();
+				if(PlacementWorld[tile.gridX][tile.gridY].surfaceEntity != null && tile.surfaceEntity == null)
+					tile = PlacementWorld[tile.gridX][tile.gridY];
+				else
+					tile.AdvanceClock();
 			}
 		}	
 		
