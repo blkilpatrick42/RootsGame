@@ -23,6 +23,7 @@ public class GameWorld {
 	worldSizeY = ySize;}
 	
 	//populates the game world with tiles
+	/*
 	public void initialize() {
 		String worldSeed = Reader.readStringFromFile("tiles.txt");
 		for(int y = 0; y < worldSizeY; y++) {
@@ -34,8 +35,8 @@ public class GameWorld {
 		initializeEntities();
 		PlacementWorld = World;
 		initialized = true;
-	}
-	public void randInit() {
+	}*/
+	public void initialize() {
 		int worldArea = worldSizeX * worldSizeY;
 		int mountainCount = 0;
 		int riverCount = 0;
@@ -212,13 +213,12 @@ public class GameWorld {
 					}
 				}
 			}
-			riverRoll = (int)(Math.random() * 100);
-		} //River generation done
+			//riverRoll = (int)(Math.random() * 100);
+		 //River generation done
 		//Fill remains with soil
 		for(int i = 0; i < worldSizeX; i++) {
 			for(int j = 0; j < worldSizeY; j++) {
 				if(World[i][j] == null) {
-						//I know this is disgusting but bear with me
 					if(i+1 < worldSizeX && World[i+1][j] != null && World[i+1][j].GetIdentity().equals("Water")) {
 						World[i][j] = new Grass();
 						World[i][j].SetGridLocation(i, j);
@@ -238,7 +238,9 @@ public class GameWorld {
 				}
 			}
 		}
-		
+		initialized = true;
+		PlacementWorld = World;
+	}
 	
 	}
 	
