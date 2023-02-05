@@ -7,7 +7,7 @@ public class Water extends Tile {
 	public static String identity = "Water";
 	
 	public Water() {
-		aspect = new VisualAspect(Reader.GetSpriteSheet(),3,0,16);
+		aspect = new VisualAspect(Reader.GetSpriteSheet(),2,0,16);
 	}
 	
 	public String GetIdentity() {

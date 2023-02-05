@@ -8,7 +8,7 @@ public class Grass extends Tile {
 	public static String identity = "Grass";	
 	
 	public Grass() {
-		aspect = new VisualAspect(Reader.GetSpriteSheet(),1,0,16);
+		aspect = new VisualAspect(Reader.GetSpriteSheet(),0,0,16);
 	}
 	
 	public String GetIdentity() {

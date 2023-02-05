@@ -76,11 +76,11 @@ public class RootsGame extends ApplicationAdapter {
 		}
 		
 		//enter toggles game pause
-		if (Gdx.input.isKeyPressed(Input.Keys.ENTER))
+		if (Gdx.input.isKeyJustPressed(Input.Keys.ENTER))
 			ToggleTimePaused();
 		
 		//if the game is paused, space advances the clock by one
-		if (Gdx.input.isKeyPressed(Input.Keys.SPACE)&& timePaused)
+		if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)&& timePaused)
 			Game.AdvanceClock();			
 	}
 	
