@@ -2,7 +2,10 @@ package com.mygdx.rootsgame;
 
 import com.mygdx.rootsgame.world.*;
 import com.mygdx.rootsgame.entities.*;
+import com.mygdx.rootsgame.util.DiceRollerPF;
+
 import java.util.ArrayList;
+import java.lang.Math;
 
 public abstract class WorldObject {
 	public int age = 0;

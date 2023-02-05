@@ -1,4 +1,5 @@
 package com.mygdx.rootsgame;
+import java.lang.Math;
 
 import com.mygdx.rootsgame.world.*;
 import com.mygdx.rootsgame.entities.*;
@@ -19,6 +20,163 @@ public class GameWorld {
 		clock = 0;
 		worldSizeX = xSize;
 		worldSizeY = ySize;
+		int h = ySize;
+		int w = xSize;
+		int n = xSize * ySize;
+		int m = 0;
+		int r = 0;
+		int randX = 0;
+		int randY = 0;
+		//Add mountains
+		MountainGrid Mount;
+		for (int i = 0; i < (int)(n*0.03); i++) {
+			if (m < (int)(n*0.25)) {
+				randX = (int)(Math.random() * w);
+				randY = (int)(Math.random() * h);
+				Mount = new MountainGrid(World,World[randX][randY],n,m,1,w,h);
+				World = Mount.Mountainize().map;
+				m = Mount.m;
+			}
+		}
+		//Add rivers
+		int riverRoll = 100;
+		String natFlow;
+		String curFlow;
+		int riverWidth;
+		int flowStop = 0;
+		int flowSwitch = 0;
+		int flowRoll;
+		int clearanceCheck = 0;
+		int holdX;
+		int holdY;
+		while(riverRoll > (int)((1 - Math.pow((n-r)/n,1))*100)) {
+			//Determine width
+			riverWidth = (int)(Math.random() * 100);
+			if(riverWidth > 91)
+				riverWidth = (int)(w * 0.15);
+			else if(riverWidth > 65)
+				riverWidth = (int)(w * 0.10);
+			else
+				riverWidth = (int)(w * 0.05);
+			//Determine starting coordinate and hemisphere
+			randX = (int)(Math.random() * w);
+			randY = (int)(Math.random() * h);
+			if(randY < h/2) {
+				randY = (int)(Math.random() * 100);
+				randY = ((100-randY)/400)* h;
+				natFlow = "North";
+				curFlow = "North";
+			}
+			else {
+				randY = (int)(Math.random() * 100);
+				randY = ((300+randY)/400) * h;
+				natFlow = "South";
+				curFlow = "South";
+			}
+			//Determine length and path
+			if(randX + riverWidth > w) {
+				randX = randX - riverWidth;
+			}
+			if(randY + riverWidth > h) {
+				randY = randY - riverWidth;
+			}
+			flowSwitch = 0;
+			while(flowStop == 0) {
+				//Clearance check
+				if(curFlow.equals("North") || curFlow.equals("South")) {
+					for(clearanceCheck = 0; clearanceCheck < riverWidth; clearanceCheck++) {
+						if(World[randX + clearanceCheck][randY].GetIdentity().equals("Mountain")) {
+							flowStop = 1;
+							break;
+						}
+						World[randX + clearanceCheck][randY] = new Water();
+						World[randX + clearanceCheck][randY].SetGridLocation(randX + clearanceCheck, randY);
+					}
+				}else {
+					for(clearanceCheck = 0; clearanceCheck < riverWidth; clearanceCheck++) {
+						if(World[randX][randY + clearanceCheck].GetIdentity().equals("Mountain")) {
+							flowStop = 1;
+							break;
+						}
+						World[randX][randY + clearanceCheck] = new Water();
+						World[randX][randY + clearanceCheck].SetGridLocation(randX, randY + clearanceCheck);
+					}
+				}
+				if(flowStop == 1)
+					break;
+				r = r + riverWidth;
+				if(curFlow.equals("North"))
+					randY++;
+				if(curFlow.equals("South"))
+					randY--;
+				if(curFlow.equals("East"))
+					randX++;
+				if(curFlow.equals("West"))
+					randY--;
+				flowSwitch++;
+				if(flowSwitch == riverWidth) {
+					flowRoll = (int)(Math.random() * 100);
+					//THIS VALUE DETERMINES LENGTH
+					if(flowRoll > 90) {
+						flowStop = 2;
+						break;
+					}
+					flowRoll = (int)(Math.random() * 100);
+					//THESE VALUES DECIDE TWISTINESS
+					if(natFlow.equals("North")) {
+						if(curFlow.equals("North")) {
+							if(flowRoll < 16)
+								curFlow = "West";
+							if(flowRoll > 84)
+								curFlow = "East";
+						}else if(curFlow.equals("West") || curFlow.equals("East")) {
+							if(flowRoll < 31)
+								curFlow = "North";
+						}
+					}
+					if(natFlow.equals("South")) {
+						if(curFlow.equals("South")) {
+							if(flowRoll < 16)
+								curFlow = "West";
+							if(flowRoll > 84)
+								curFlow = "East";
+						}else if(curFlow.equals("West") || curFlow.equals("East")) {
+							if(flowRoll < 31)
+								curFlow = "South";
+						}
+					}
+					flowSwitch = 0;
+				}
+			}
+			if(flowStop == 2) {
+				for(int i = 0; i < riverWidth; i++) {
+					for(int j = 0; j < riverWidth - i; j++) {
+						if(!World[randX+i][randY+j].GetIdentity().equals("Mountain")) {
+							r++;
+							World[randX+i][randY+j] = new Water();
+							World[randX+i][randY+j].SetGridLocation(randX+i, randY+j);
+						}
+						if(!World[randX+i][randY-j].GetIdentity().equals("Mountain")) {
+							r++;
+							World[randX+i][randY-j] = new Water();
+							World[randX+i][randY-j].SetGridLocation(randX+i, randY-j);
+						}
+						if(!World[randX-i][randY+j].GetIdentity().equals("Mountain")) {
+							r++;
+							World[randX-i][randY+j] = new Water();
+							World[randX-i][randY+j].SetGridLocation(randX-i, randY+j);
+						}
+						if(!World[randX-i][randY-j].GetIdentity().equals("Mountain")) {
+							r++;
+							World[randX-i][randY-j] = new Water();
+							World[randX-i][randY-j].SetGridLocation(randX-i, randY-j);
+						}
+					}
+				}
+			}
+			riverRoll = (int)(Math.random() * 100);
+		}
+		
 	}
 	
 	//populates the game world with tiles
@@ -41,6 +199,8 @@ public class GameWorld {
 			return new Water();
 		if(tileChar == 'G')
 			return new Grass();
+		if(tileChar == 'M')
+			return new Mountain();
 		else
 			return new Soil();
 	}
