@@ -60,9 +60,9 @@ public class RootsGame extends ApplicationAdapter {
 	}
 	
 	public long diff, start = System.currentTimeMillis(); //gets current system time in Millisecs
-	int slowSpeed = 1;
-	int mediumSpeed = 3;
-	int fastSpeed = 9;
+	int slowSpeed = 6;
+	int mediumSpeed = 12;
+	int fastSpeed = 32;
 	public enum TimeSpeed{
 		slow,
 		medium,
