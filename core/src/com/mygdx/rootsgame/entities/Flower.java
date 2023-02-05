@@ -29,18 +29,25 @@ public class Flower extends Entity{
 			switch(color){
 				case 'R':
 					spriteLoc = 3;
+					break;
 				case 'Y':
 					spriteLoc = 5;
+					break;
 				case 'B':
 					spriteLoc = 4;
+					break;
 				case 'G':
 					spriteLoc = 7;
+					break;
 				case 'P':
 					spriteLoc = 9;
+					break;
 				case 'O':
 					spriteLoc = 8;
+					break;
 				case 'W':
 					spriteLoc = 6;
+					break;
 				}
 		}
 		

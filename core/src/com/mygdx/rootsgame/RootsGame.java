@@ -164,11 +164,15 @@ public class RootsGame extends ApplicationAdapter {
 			cursor.locX = cursor.locX + 1;
 		}
 		if(Gdx.input.isKeyJustPressed(Input.Keys.Z) && timePaused) {
-			Entity submittedEntity = new RedFlower(cursor.locX,cursor.locY);
+			Entity submittedEntity = new Flower(cursor.locX,cursor.locY,'R',1);
 			Game.PlacementWorld[cursor.locX][cursor.locY].surfaceEntity = submittedEntity;
 		}
 		if(Gdx.input.isKeyJustPressed(Input.Keys.X) && timePaused) {
-			Entity submittedEntity = new YellowFlower(cursor.locX,cursor.locY);
+			Entity submittedEntity = new Flower(cursor.locX,cursor.locY,'Y',1);
+			Game.PlacementWorld[cursor.locX][cursor.locY].surfaceEntity = submittedEntity;
+		}
+		if(Gdx.input.isKeyJustPressed(Input.Keys.C) && timePaused) {
+			Entity submittedEntity = new Flower(cursor.locX,cursor.locY,'B',1);
 			Game.PlacementWorld[cursor.locX][cursor.locY].surfaceEntity = submittedEntity;
 		}
 	}

@@ -68,9 +68,9 @@ public class GameWorld {
 		case 'B':
 		case 'Y':
 		case 'P':
-		case 'O':
-		case 'G':
 		case 'W':
+		case 'G':
+		case 'O':
 			return new Flower (x,y,tileChar,1);
 		}
 		return null;
