@@ -56,12 +56,7 @@ public class GameWorld {
 	}
 	
 	private Entity getEntityFromChar(char tileChar, int x, int y) {
-		if(tileChar == 'R')
-			return new RedFlower(x,y);
-		if(tileChar == 'Y')
-			return new YellowFlower(x,y);
-		else
-			return null;
+		return new Flower (x,y,tileChar,1);
 	}
 	
 	public long diff, start = System.currentTimeMillis(); //gets current system time in Millisecs
