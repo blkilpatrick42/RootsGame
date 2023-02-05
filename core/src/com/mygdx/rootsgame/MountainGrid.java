@@ -27,83 +27,82 @@ public class MountainGrid {
 		int holdY = gridY;
 		this.startMountain = new Mountain();
 		this.startMountain.SetGridLocation(holdX, holdY);
+		this.map[holdX][holdY] = startMountain;
 		this.mountainCount++;
-		MountainGrid copy = new MountainGrid(this.map, this.startMountain, this.mapArea, this.mountainCount, this.mountainFrequencyCoeff, this.mapXDimension, this.mapYDimension);
 		
 		//Mountainize N
 		if(DiceRollerPF.RollDice(100, (int)((1-Math.pow((this.mapArea-this.mountainCount)/this.mapArea, this.mountainFrequencyCoeff))*100))){
-			if(holdY < copy.mapYDimension) {
-				if(!copy.map[holdX][holdY + 1].GetIdentity().equals("Mountain")) {
-					copy.startMountain = copy.map[holdX][holdY + 1];
-					copy = copy.Mountainize(holdX, holdY+1);
+			if(holdY < this.mapYDimension) {
+				if(!this.map[holdX][holdY + 1].GetIdentity().equals("Mountain")) {
+					this.startMountain = this.map[holdX][holdY + 1];
+					this.Mountainize(holdX, holdY+1);
 				}
 			}	
 		}
 		
 		//Mountainize NE
 		if(DiceRollerPF.RollDice(100, (int)((1-Math.pow((this.mapArea-this.mountainCount)/this.mapArea, this.mountainFrequencyCoeff))*100))){
-			if(holdY < copy.mapYDimension && holdX < copy.mapXDimension) {
-				if(!copy.map[holdX+1][holdY + 1].GetIdentity().equals("Mountain")) {
-					copy.startMountain = copy.map[holdX + 1][holdY + 1];
-					copy = copy.Mountainize(holdX+1,holdY+1);
+			if(holdY < this.mapYDimension && holdX < this.mapXDimension) {
+				if(!this.map[holdX+1][holdY + 1].GetIdentity().equals("Mountain")) {
+					this.startMountain = this.map[holdX + 1][holdY + 1];
+					this.Mountainize(holdX+1,holdY+1);
 				}
 			}	
 		}
 		//Mountainize E
 		if(DiceRollerPF.RollDice(100, (int)((1-Math.pow((this.mapArea-this.mountainCount)/this.mapArea, this.mountainFrequencyCoeff))*100))){
-			if(holdX < copy.mapXDimension) {
-				if(!copy.map[holdX+1][holdY].GetIdentity().equals("Mountain")) {
-					copy.startMountain = copy.map[holdX + 1][holdY];
-					copy = copy.Mountainize(holdX+1,holdY);
+			if(holdX < this.mapXDimension) {
+				if(!this.map[holdX+1][holdY].GetIdentity().equals("Mountain")) {
+					this.startMountain = this.map[holdX + 1][holdY];
+					this.Mountainize(holdX+1,holdY);
 				}
 			}	
 		}
 		//Mountainize SE
 		if(DiceRollerPF.RollDice(100, (int)((1-Math.pow((this.mapArea-this.mountainCount)/this.mapArea, this.mountainFrequencyCoeff))*100))){
-			if(holdY > 0 && holdX < copy.mapXDimension) {
-				if(!copy.map[holdX+1][holdY - 1].GetIdentity().equals("Mountain")) {
-					copy.startMountain = copy.map[holdX + 1][holdY + 1];
-					copy = copy.Mountainize(holdX+1, holdY+1);
+			if(holdY > 0 && holdX < this.mapXDimension) {
+				if(!this.map[holdX+1][holdY - 1].GetIdentity().equals("Mountain")) {
+					this.startMountain = this.map[holdX + 1][holdY + 1];
+					this.Mountainize(holdX+1, holdY+1);
 				}
 			}	
 		}
 		//Mountainize S
 		if(DiceRollerPF.RollDice(100, (int)((1-Math.pow((this.mapArea-this.mountainCount)/this.mapArea, this.mountainFrequencyCoeff))*100))){
 			if(holdY > 0) {
-				if(!copy.map[holdX][holdY - 1].GetIdentity().equals("Mountain")) {
-					copy.startMountain = copy.map[holdX][holdY - 1];
-					copy = copy.Mountainize(holdX, holdY-1);
+				if(!this.map[holdX][holdY - 1].GetIdentity().equals("Mountain")) {
+					this.startMountain = this.map[holdX][holdY - 1];
+					this.Mountainize(holdX, holdY-1);
 				}
 			}	
 		}
 		//Mountainize SW
 		if(DiceRollerPF.RollDice(100, (int)((1-Math.pow((this.mapArea-this.mountainCount)/this.mapArea, this.mountainFrequencyCoeff))*100))){
 			if(holdY > 0 && holdX > 0) {
-				if(!copy.map[holdX - 1][holdY - 1].GetIdentity().equals("Mountain")) {
-					copy.startMountain = copy.map[holdX - 1][holdY - 1];
-					copy = copy.Mountainize(holdX-1, holdY-1);
+				if(!this.map[holdX - 1][holdY - 1].GetIdentity().equals("Mountain")) {
+					this.startMountain = this.map[holdX - 1][holdY - 1];
+					this.Mountainize(holdX-1, holdY-1);
 				}
 			}	
 		}
 		//Mountainize W
 		if(DiceRollerPF.RollDice(100, (int)((1-Math.pow((this.mapArea-this.mountainCount)/this.mapArea, this.mountainFrequencyCoeff))*100))){
 			if(holdX > 0) {
-				if(!copy.map[holdX - 1][holdY].GetIdentity().equals("Mountain")) {
-					copy.startMountain = copy.map[holdX - 1][holdY];
-					copy = copy.Mountainize(holdX-1, holdY);
+				if(!this.map[holdX - 1][holdY].GetIdentity().equals("Mountain")) {
+					this.startMountain = this.map[holdX - 1][holdY];
+					this.Mountainize(holdX-1, holdY);
 				}
 			}	
 		}
 		//Mountainize NW
 		if(DiceRollerPF.RollDice(100, (int)((1-Math.pow((this.mapArea-this.mountainCount)/this.mapArea, this.mountainFrequencyCoeff))*100))){
-			if(holdY > 0 && holdX < copy.mapXDimension) {
-				if(!copy.map[holdX - 1][holdY - 1].GetIdentity().equals("Mountain")) {
-					copy.startMountain = copy.map[holdX - 1][holdY + 1];
-					copy = copy.Mountainize(holdX-1, holdY+1);
+			if(holdY > 0 && holdX < this.mapXDimension) {
+				if(!this.map[holdX - 1][holdY - 1].GetIdentity().equals("Mountain")) {
+					this.startMountain = this.map[holdX - 1][holdY + 1];
+					this.Mountainize(holdX-1, holdY+1);
 				}
 			}	
 		}
-		
-		return copy;
+		return this;
 	}
 }

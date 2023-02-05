@@ -6,7 +6,7 @@ public class Mountain extends Tile {
 	public static String identity = "Mountain";
 	
 	public Mountain() {
-		aspect = new VisualAspect(Reader.GetSpriteSheet(),3,2,16);
+		aspect = new VisualAspect(Reader.GetSpriteSheet(),1,2,16);
 	}
 	
 	public String GetIdentity() {
