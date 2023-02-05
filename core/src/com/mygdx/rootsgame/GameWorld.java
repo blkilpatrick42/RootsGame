@@ -6,6 +6,7 @@ import com.mygdx.rootsgame.entities.*;
 
 public class GameWorld {
 	public Tile[][] World;
+	public Tile[][] PlacementWorld;
 	boolean initialized = false;
 	int clock;
 	
@@ -31,6 +32,7 @@ public class GameWorld {
 			}
 		}
 		initializeEntities();
+		PlacementWorld = World;
 		initialized = true;
 	}
 	public void randInit() {
@@ -266,53 +268,23 @@ public class GameWorld {
 	private Entity getEntityFromChar(char tileChar, int x, int y) {
 		if(tileChar == 'R')
 			return new RedFlower(x,y);
-		if(tileChar == 'Y')
+	    if(tileChar == 'Y')
 			return new YellowFlower(x,y);
+	    if(tileChar == 'S')
+			return new ShrubSapling(x,y);
+	    if(tileChar == 'O')
+			return new Rock(x,y);
+	    if (tileChar == 'P')
+			return new PineSapling(x,y);
+	    if (tileChar == 'V')
+			return new Vine(x,y);
 		else
 			return null;
 	}
-	
-	public long diff, start = System.currentTimeMillis(); //gets current system time in Millisecs
-	int slowSpeed = 1;
-	int mediumSpeed = 2;
-	int fastSpeed = 3;
-	public enum TimeSpeed{
-		slow,
-		medium,
-		fast
-	}
-	
-	public int GetTimeSpeed(TimeSpeed speed) {
-		int retSpeed = 0;
-		switch(speed) {
-			 case slow: retSpeed = slowSpeed;
-	         break;
-			 case medium: retSpeed = mediumSpeed;
-	         break;
-			 case fast:  retSpeed = fastSpeed;
-	         break;
-		}
-		return retSpeed;
-	}
-	
-	//Tick function, limits the program to the fps
-    public void sleep(int fps) {
-        if (fps > 0) {
-            diff = System.currentTimeMillis() - start;
-            long targetDelay = 1000 / fps;
-            if (diff < targetDelay) {
-                try {
-                    Thread.sleep(targetDelay - diff);
-                } catch (InterruptedException e) {
-                }
-            }
-            start = System.currentTimeMillis();
-        }
-    }
 
 	//Advances the world clock by one tick
 	public void AdvanceClock() {
-		sleep(GetTimeSpeed(TimeSpeed.slow));
+		//sleep(GetTimeSpeed(TimeSpeed.slow));
 		NextWorldState = new FutureWorld(this);
 		clock++;
 		
@@ -320,7 +292,10 @@ public class GameWorld {
 		//calls to influence the static FutureWorld member NextWorldState
 		for(Tile[] tiles: World) {
 			for(Tile tile: tiles) {
-				tile.AdvanceClock();
+				if(PlacementWorld[tile.gridX][tile.gridY].surfaceEntity != null && tile.surfaceEntity == null)
+					tile = PlacementWorld[tile.gridX][tile.gridY];
+				else
+					tile.AdvanceClock();
 			}
 		}	
 		

@@ -38,7 +38,7 @@ public class FutureWorld {
 	}
 	
 	public void SubmitFutureEntity(int newPrecedence, Entity replacement, int x, int y){
-		Tile replacementTile = (Tile)newWorld[x][y].surfaceEntity.clone();
+		Tile replacementTile = newWorld[x][y];
 		replacementTile.SetSurfaceEntity(replacement);
 		
 		if(newPrecedence > precedence[x][y]) {
