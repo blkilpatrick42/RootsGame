@@ -60,6 +60,8 @@ public class GameWorld {
 			return new RedFlower(x,y);
 		if(tileChar == 'Y')
 			return new YellowFlower(x,y);
+		if(tileChar == 'S')
+			return new ShrubSapling(x,y);
 		else
 			return null;
 	}
