@@ -1,6 +1,10 @@
 package com.mygdx.rootsgame;
 
 import com.mygdx.rootsgame.world.*;
+
+import java.util.Arrays;
+import java.lang.*;
+
 import com.mygdx.rootsgame.entities.*;
 
 public class GameWorld {
@@ -56,7 +60,17 @@ public class GameWorld {
 	}
 	
 	private Entity getEntityFromChar(char tileChar, int x, int y) {
-		return new Flower (x,y,tileChar,1);
+		switch(Character.toUpperCase(tileChar)) {
+		case 'R':
+		case 'B':
+		case 'Y':
+		case 'P':
+		case 'O':
+		case 'G':
+		case 'W':
+			return new Flower (x,y,tileChar,1);
+		}
+		return null;
 	}
 
 	//Advances the world clock by one tick
