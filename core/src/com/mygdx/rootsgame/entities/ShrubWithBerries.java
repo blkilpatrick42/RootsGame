@@ -5,9 +5,7 @@ import com.mygdx.rootsgame.RootsGame;
 import com.mygdx.rootsgame.VisualAspect;
 import com.mygdx.rootsgame.WorldObject.TileDir;
 import com.mygdx.rootsgame.util.DiceRoller;
-import com.mygdx.rootsgame.world.Grass;
-import com.mygdx.rootsgame.world.Soil;
-import com.mygdx.rootsgame.world.Tile;
+import com.mygdx.rootsgame.world.*;
 
 public class ShrubWithBerries extends Entity{
 	public static String identity = "Shrub";
@@ -35,44 +33,44 @@ public class ShrubWithBerries extends Entity{
 				//model grass growth to adjacent tiles
 				int shrubGrowthPrecedence = 1;
 				int chanceModifier = 20;
-				if(adjacentNorth != null && adjacentNorth.surfaceEntity == null && (adjacentNorth.GetIdentity().contains(Soil.identity) || adjacentNorth.GetIdentity().contains(Grass.identity))) {
+				if(adjacentNorth != null && adjacentNorth.surfaceEntity == null && !adjacentNorth.GetIdentity().contains(Water.identity)) {
 				   if(DiceRoller.RollDice(chanceModifier)) {
 					   Grass newGrassTile = new Grass();
 					   newGrassTile.SetGridLocation(gridX, gridY+1);
 					   RootsGame.Game.NextWorldState.SubmitFutureEntity(shrubGrowthPrecedence, new ShrubSapling(gridX, gridY+1), gridX, gridY+1);
 				   }
 				}
-				if(adjacentNorthEast != null && adjacentNorthEast.surfaceEntity== null && (adjacentNorthEast.GetIdentity().contains(Soil.identity) || adjacentNorth.GetIdentity().contains(Grass.identity))) {
+				if(adjacentNorthEast != null && adjacentNorthEast.surfaceEntity== null && !adjacentNorthEast.GetIdentity().contains(Water.identity)) {
 					if(DiceRoller.RollDice(chanceModifier)) {
 						RootsGame.Game.NextWorldState.SubmitFutureEntity(shrubGrowthPrecedence, new ShrubSapling(gridX+1, gridY+1), gridX+1, gridY+1);
 					}
 				}
-				if(adjacentEast != null && adjacentEast.surfaceEntity == null && (adjacentEast.GetIdentity().contains(Soil.identity) || adjacentNorth.GetIdentity().contains(Grass.identity))) {
+				if(adjacentEast != null && adjacentEast.surfaceEntity == null && !adjacentEast.GetIdentity().contains(Water.identity)) {
 					if(DiceRoller.RollDice(chanceModifier)) {
 						RootsGame.Game.NextWorldState.SubmitFutureEntity(shrubGrowthPrecedence, new ShrubSapling(gridX+1, gridY), gridX+1, gridY);
 					}
 				}
-				if(adjacentSouthEast != null && adjacentSouthEast.surfaceEntity == null && (adjacentSouthEast.GetIdentity().contains(Soil.identity) || adjacentNorth.GetIdentity().contains(Grass.identity))) {
+				if(adjacentSouthEast != null && adjacentSouthEast.surfaceEntity == null && !adjacentSouthEast.GetIdentity().contains(Water.identity)) {
 					if(DiceRoller.RollDice(chanceModifier)) {
 						RootsGame.Game.NextWorldState.SubmitFutureEntity(shrubGrowthPrecedence, new ShrubSapling(gridX+1, gridY-1), gridX+1, gridY-1);
 					}
 				}
-				if(adjacentSouth != null && adjacentSouth.surfaceEntity == null && (adjacentSouth.GetIdentity().contains(Soil.identity) || adjacentNorth.GetIdentity().contains(Grass.identity))) {
+				if(adjacentSouth != null && adjacentSouth.surfaceEntity == null && !adjacentSouth.GetIdentity().contains(Water.identity)) {
 					if(DiceRoller.RollDice(chanceModifier)) {
 						RootsGame.Game.NextWorldState.SubmitFutureEntity(shrubGrowthPrecedence, new ShrubSapling(gridX, gridY-1), gridX, gridY-1);
 					}
 				}
-				if(adjacentSouthWest != null && adjacentSouthWest.surfaceEntity == null && (adjacentSouthWest.GetIdentity().contains(Soil.identity) || adjacentNorth.GetIdentity().contains(Grass.identity))) {
+				if(adjacentSouthWest != null && adjacentSouthWest.surfaceEntity == null && !adjacentSouthWest.GetIdentity().contains(Water.identity)) {
 					if(DiceRoller.RollDice(chanceModifier)) {
 						RootsGame.Game.NextWorldState.SubmitFutureEntity(shrubGrowthPrecedence, new ShrubSapling(gridX-1, gridY-1), gridX-1, gridY-1);
 					}
 				}
-				if(adjacentWest != null && adjacentWest.surfaceEntity == null && (adjacentWest.GetIdentity().contains(Soil.identity) || adjacentNorth.GetIdentity().contains(Grass.identity))) {
+				if(adjacentWest != null && adjacentWest.surfaceEntity == null && !adjacentWest.GetIdentity().contains(Water.identity)) {
 					if(DiceRoller.RollDice(chanceModifier)) {
 						RootsGame.Game.NextWorldState.SubmitFutureEntity(shrubGrowthPrecedence, new ShrubSapling(gridX-1, gridY), gridX-1, gridY);
 					}
 				}
-				if(adjacentNorthWest != null && adjacentNorthWest.surfaceEntity == null && (adjacentNorthWest.GetIdentity().contains(Soil.identity) || adjacentNorth.GetIdentity().contains(Grass.identity))) {
+				if(adjacentNorthWest != null && adjacentNorthWest.surfaceEntity == null && !adjacentNorthWest.GetIdentity().contains(Water.identity)) {
 					if(DiceRoller.RollDice(chanceModifier)) {
 						RootsGame.Game.NextWorldState.SubmitFutureEntity(shrubGrowthPrecedence, new ShrubSapling(gridX-1, gridY+1), gridX-1, gridY+1);
 					}
