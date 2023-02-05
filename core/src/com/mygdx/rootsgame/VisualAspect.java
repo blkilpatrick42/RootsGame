@@ -11,7 +11,6 @@ public class VisualAspect {
     public VisualAspect(){
         localTexture = new Texture("NullTex.png");
         localSprite = new Sprite(localTexture);
-        setPos(0,0,1);
     }
     
     //constructor for loading a sprite from a sprite sheet
@@ -20,7 +19,6 @@ public class VisualAspect {
      public VisualAspect(Texture inTex, int x, int y, int size){
         localTexture = inTex;
         localSprite = new Sprite(localTexture,x*size,y*size,size,size);
-		setPos(0,0,1);
     }
     
     //Returns the local sprite
