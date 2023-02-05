@@ -20,6 +20,7 @@ public class RootsGame extends ApplicationAdapter {
     OrthographicCamera camera;
 	
 	public static GameWorld Game;
+	public static Cursor cursor;
 	
 	//time management variables
 	public static boolean timePaused = true;
@@ -52,6 +53,7 @@ public class RootsGame extends ApplicationAdapter {
 		camera.setToOrtho(false, VIRTUAL_WIDTH, VIRTUAL_HEIGHT);
 		
 		Game.initialize();
+		cursor = new Cursor(20, 15);
 	}
 
 	@Override
@@ -68,6 +70,7 @@ public class RootsGame extends ApplicationAdapter {
 		 
 		batch.begin();		
 		DrawGameWorld(Game);
+		DrawCursor();
 		batch.end();
 		
 		//if time is unpaused, advance it at given speed
@@ -81,23 +84,41 @@ public class RootsGame extends ApplicationAdapter {
 		
 		//if the game is paused, space advances the clock by one
 		if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)&& timePaused)
-			Game.AdvanceClock();			
+			Game.AdvanceClock();	
+		
+		if(Gdx.input.isKeyJustPressed(Input.Keys.UP) && cursor.locY+1 < Game.worldSizeY) {
+			cursor.locY = cursor.locY + 1;
+		}
+		if(Gdx.input.isKeyJustPressed(Input.Keys.DOWN) && cursor.locY-1 >= 0) {
+			cursor.locY = cursor.locY - 1;
+		}
+		if(Gdx.input.isKeyJustPressed(Input.Keys.LEFT) && cursor.locX-1 >= 0) {
+			cursor.locX = cursor.locX - 1;
+		}
+		if(Gdx.input.isKeyJustPressed(Input.Keys.RIGHT) && cursor.locX+1 < Game.worldSizeX) {
+			cursor.locX = cursor.locX + 1;
+		}
 	}
 	
 	public void DrawGameWorld(GameWorld gameWorld) {
 		for(Tile[] tiles: gameWorld.World) {
-			for(Tile tile: tiles) {
+			for(Tile tile: tiles) {			
 				//draw ground tile
-				tile.aspect.localSprite.draw(batch);
 				tile.aspect.setPos(tile.gridX, tile.gridY, 16);
-				
+				tile.aspect.localSprite.draw(batch);
+							
 				//draw entity on top of the ground tile
 				if(tile.surfaceEntity != null) {
-					tile.surfaceEntity.aspect.localSprite.draw(batch);
 					tile.surfaceEntity.aspect.setPos(tile.gridX, tile.gridY, 16);
+					tile.surfaceEntity.aspect.localSprite.draw(batch);				
 				}
 			}
 		}		
+	}
+	
+	public void DrawCursor() {
+		cursor.aspect.setPos(cursor.locX, cursor.locY, 16);
+		cursor.aspect.localSprite.draw(batch);	
 	}
 	
 	@Override
