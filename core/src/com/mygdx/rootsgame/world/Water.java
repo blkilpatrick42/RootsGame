@@ -11,6 +11,6 @@ public class Water extends Tile {
 	}
 	
 	public String GetIdentity() {
-		return this.identity;
+		return "Water";
 	}
 }

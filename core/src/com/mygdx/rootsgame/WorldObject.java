@@ -1,7 +1,6 @@
 package com.mygdx.rootsgame;
 
 import com.mygdx.rootsgame.world.*;
-import com.mygdx.rootsgame.entities.*;
 import java.util.ArrayList;
 
 public abstract class WorldObject {
@@ -23,7 +22,7 @@ public abstract class WorldObject {
 	}
 	
 	public String GetIdentity() {
-		return this.identity;
+		return WorldObject.identity;
 	}
 	
 	//override this function to create rules on entities that inherit from this class
@@ -46,10 +45,12 @@ public abstract class WorldObject {
 		gridY = y;
 	}
 	
+	//See below
 	public Tile GetAdjacentTile(TileDir dir) {
 		return GetAdjacentTile(dir, 1);
 	}
 	
+	//Determines if the adjacent tile at the provided distance in provided direction is valid, returns the tile if so and null if not.
 	public Tile GetAdjacentTile(TileDir dir, int distance) {
 		if(dir == TileDir.north) {
 			int newGridY = gridY + distance;
@@ -107,6 +108,7 @@ public abstract class WorldObject {
 		return null;
 	}
 	
+	//Creates ArrayList of adjacent tiles going clockwise from north.
 	public ArrayList<Tile> GetAdjacentTiles(int distance) {
 		ArrayList<Tile> tiles = new ArrayList<Tile>();
 		tiles.add(GetAdjacentTile(TileDir.north,distance));

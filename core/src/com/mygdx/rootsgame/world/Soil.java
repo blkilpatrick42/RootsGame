@@ -10,6 +10,6 @@ public class Soil extends Tile {
 	}
 	
 	public String GetIdentity() {
-		return this.identity;
+		return "Soil";
 	}
 }

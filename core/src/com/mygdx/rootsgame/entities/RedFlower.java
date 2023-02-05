@@ -12,6 +12,6 @@ public class RedFlower extends Flower{
 	}
 	
 	public String GetIdentity() {
-		return this.identity;
+		return "RedFlower";
 	}
 }
