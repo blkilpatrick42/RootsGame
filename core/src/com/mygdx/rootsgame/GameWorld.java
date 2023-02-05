@@ -96,12 +96,13 @@ public class GameWorld {
 		//calls to influence the static FutureWorld member NextWorldState
 		for(Tile[] tiles: World) {
 			for(Tile tile: tiles) {
-				if(PlacementWorld[tile.gridX][tile.gridY].surfaceEntity != null && tile.surfaceEntity == null)
+				if(PlacementWorld[tile.gridX][tile.gridY].surfaceEntity != null)
 					tile = PlacementWorld[tile.gridX][tile.gridY];
 				else
 					tile.AdvanceClock();
 			}
 		}	
+		PlacementWorld = World;
 		
 		//swap the current game world with the future world
 		World = NextWorldState.newWorld;
