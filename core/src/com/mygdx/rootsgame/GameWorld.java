@@ -62,7 +62,8 @@ public class GameWorld {
 	}
 	
 	private Entity getEntityFromChar(char tileChar, int x, int y) {
-		switch(Character.toUpperCase(tileChar)) {
+		tileChar = Character.toUpperCase(tileChar);
+		switch(tileChar) {
 		case 'R':
 		case 'B':
 		case 'Y':

@@ -7,6 +7,7 @@ import com.mygdx.rootsgame.Reader;
 import com.mygdx.rootsgame.RootsGame;
 import com.mygdx.rootsgame.VisualAspect;
 import com.mygdx.rootsgame.util.DiceRoller;
+import com.mygdx.rootsgame.world.Grass;
 import com.mygdx.rootsgame.world.Soil;
 import com.mygdx.rootsgame.world.Tile;
 import com.mygdx.rootsgame.world.Water;
@@ -37,18 +38,25 @@ public class Flower extends Entity{
 			switch(color){
 				case 'R':
 					spriteLoc = 3;
+					break;
 				case 'Y':
 					spriteLoc = 5;
+					break;
 				case 'B':
 					spriteLoc = 4;
+					break;
 				case 'G':
 					spriteLoc = 7;
+					break;
 				case 'P':
 					spriteLoc = 9;
+					break;
 				case 'O':
 					spriteLoc = 8;
+					break;
 				case 'W':
 					spriteLoc = 6;
+					break;
 				}
 		}
 		
@@ -69,18 +77,25 @@ public class Flower extends Entity{
 		switch(FlowerColor) {
 			case 'R':
 				colorString = "Red";
+				break;
 			case 'Y':
 				colorString = "Yellow";
+				break;
 			case 'B':
 				colorString = "Blue";
+				break;
 			case 'G':
 				colorString = "Green";
+				break;
 			case 'P':
 				colorString = "Purple";
+				break;
 			case 'O':
 				colorString = "Orange";
+				break;
 			case 'W':
 				colorString = "White";
+				break;
 		}
 		return colorString;
 	}	
@@ -135,25 +150,25 @@ public class Flower extends Entity{
 				if(f.FlowerState > 0 && f.FlowerState < 4) {
 					//Add to count for its color
 					switch(f.FlowerColor) {
-						case 'r':
+						case 'R':
 							neighborColors[0]++;
 							break;
-						case 'b':
+						case 'B':
 							neighborColors[1]++;
 							break;
-						case 'y':
+						case 'Y':
 							neighborColors[2]++;
 							break;
-						case 'p':
+						case 'P':
 							neighborColors[3]++;
 							break;
-						case 'o':
+						case 'O':
 							neighborColors[4]++;
 							break;
-						case 'g':
+						case 'G':
 							neighborColors[5]++;
 							break;
-						case 'w':
+						case 'W':
 							neighborColors[6]++;
 							break;
 					}
@@ -188,7 +203,8 @@ public class Flower extends Entity{
 		List<String> validSeedList = new ArrayList<>();
 		
 		//If 1+ adjacent water
-		if(numWaters >= 1) {
+		//if(numWaters >= 1) {
+		if(true) {
 			//If current tile is sapling, grow to bloom1
 			
 			//If current tile is bloom, 33% chance to grow to bloom2, bloom3, or decay
@@ -235,24 +251,24 @@ public class Flower extends Entity{
 						validSeedList.add("w");
 					}
 				}
+
+				//choose random seed from valid options
+				if(validSeedList.size()>0) {
+					int seedIndex = DiceRoller.pickInt(validSeedList.size());
+					String newSeedColorString = validSeedList.get(seedIndex-1);
+					char newSeedColor = newSeedColorString.charAt(0);
+				
+					Flower newFlower  = new Flower(gridX, gridY, newSeedColor, 0);
+					RootsGame.Game.NextWorldState.SubmitFutureEntity(flowerGrowthPrecedence, newFlower, gridX, gridY);
+				}
+				
+				//Add selected seed to futureWorld for this tile
 			}
-			//choose random seed from valid options
-			//rolldice(validSeedList);
-			
-			//Add selected seed to futureWorld for this tile
 		}
 		//if no water, and blooming seed exists in square
 		//set plant to decay
 		
 		//if current tile is decay flower, set to disappear next turn
 		
-		
-		if(adjacentNorth != null && adjacentNorth.GetIdentity().contains(Soil.identity)) {
-			   if(DiceRoller.RollDice(2)) {
-				   Flower newFlowerTile = new Flower (gridX,gridY,'b',0);
-				   newFlowerTile.SetGridLocation(gridX, gridY+1);
-				   RootsGame.Game.NextWorldState.SubmitFutureEntity(flowerGrowthPrecedence, newFlowerTile, gridX, gridY+1);
-			   }
-			}
 		}
 }
