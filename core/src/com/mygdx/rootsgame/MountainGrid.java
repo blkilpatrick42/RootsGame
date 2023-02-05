@@ -23,8 +23,8 @@ public class MountainGrid {
 	}
 	
 	public MountainGrid Mountainize() {
-		int holdX = this.start.gridX;
-		int holdY = this.start.gridY;
+		int holdX = start.gridX;
+		int holdY = start.gridY;
 		this.start = new Mountain();
 		this.start.SetGridLocation(holdX, holdY);
 		this.m++;

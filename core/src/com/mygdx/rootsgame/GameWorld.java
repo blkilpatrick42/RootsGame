@@ -47,8 +47,6 @@ public class GameWorld {
 		int flowSwitch = 0;
 		int flowRoll;
 		int clearanceCheck = 0;
-		int holdX;
-		int holdY;
 		while(riverRoll > (int)((1 - Math.pow((n-r)/n,1))*100)) {
 			//Determine width
 			riverWidth = (int)(Math.random() * 100);
@@ -175,6 +173,23 @@ public class GameWorld {
 				}
 			}
 			riverRoll = (int)(Math.random() * 100);
+		} //River generation done
+		//Fill remains with soil
+		for(int i = 0; i < w; i++) {
+			for(int j = 0; j < h; j++) {
+				if(!World[i][j].GetIdentity().equals("Mountain")) {
+					if(!World[i][j].GetIdentity().equals("Water")) {
+						//I know this is disgusting but bear with me
+						if(World[i+1][j].GetIdentity().equals("Water")||World[i-1][j].GetIdentity().equals("Water")||World[i][j+1].GetIdentity().equals("Water")||World[i][j-1].GetIdentity().equals("Water")) {
+							World[i][j] = new Grass();
+							World[i][j].SetGridLocation(i, j);
+						}else {
+						World[i][j] = new Soil();
+						World[i][j].SetGridLocation(i, j);
+						}
+					}
+				}
+			}
 		}
 		
 	}
