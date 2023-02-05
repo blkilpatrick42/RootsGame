@@ -15,31 +15,43 @@ public class GameWorld {
 	public static FutureWorld NextWorldState;
 	
 	//gameworld constructor which creates a game world of xSize tiles wide and ySize tiles high
-	public GameWorld(int xSize, int ySize) {
-		World = new Tile[xSize][ySize];
-		clock = 0;
-		worldSizeX = xSize;
-		worldSizeY = ySize;
-		int h = ySize;
-		int w = xSize;
-		int n = xSize * ySize;
-		int m = 0;
-		int r = 0;
+	public GameWorld(int xSize, int ySize) {		
+	World = new Tile[xSize][ySize];
+	clock = 0;
+	worldSizeX = xSize;
+	worldSizeY = ySize;}
+	
+	//populates the game world with tiles
+	public void initialize() {
+		String worldSeed = Reader.readStringFromFile("tiles.txt");
+		for(int y = 0; y < worldSizeY; y++) {
+			for(int x = 0; x < worldSizeX; x++) {
+					World[x][worldSizeY - y - 1] = getTileFromChar(worldSeed.charAt(x + (y*worldSizeX)));
+					World[x][worldSizeY - y - 1].SetGridLocation(x, worldSizeY - y - 1);
+			}
+		}
+		initializeEntities();
+		initialized = true;
+	}
+	public void randInit() {
+		int worldArea = worldSizeX * worldSizeY;
+		int mountainCount = 0;
+		int riverCount = 0;
 		int randX = 0;
 		int randY = 0;
 		//Add mountains
 		MountainGrid Mount;
-		for (int i = 0; i < (int)(n*0.03); i++) {
-			if (m < (int)(n*0.25)) {
-				randX = (int)(Math.random() * w);
-				randY = (int)(Math.random() * h);
-				Mount = new MountainGrid(World,World[randX][randY],n,m,1,w,h);
+		for (int i = 0; i < (int)(worldArea*0.03); i++) {
+			if (mountainCount < (int)(worldArea*0.25)) {
+				randX = (int)(Math.random() * worldSizeX);
+				randY = (int)(Math.random() * worldSizeY);
+				Mount = new MountainGrid(World,World[randX][randY],worldArea,mountainCount,1,worldSizeX,worldSizeY);
 				World = Mount.Mountainize(randX, randY).map;
-				m = Mount.m;
+				mountainCount = Mount.mountainCount;
 			}
 		}
 		//Add rivers
-		int riverRoll = 100;
+		int riverRoll = 20;
 		String natFlow;
 		String curFlow;
 		int riverWidth;
@@ -47,36 +59,36 @@ public class GameWorld {
 		int flowSwitch = 0;
 		int flowRoll;
 		int clearanceCheck = 0;
-		while(riverRoll > (int)((1 - Math.pow((n-r)/n,1))*100)) {
+		while(riverRoll > (int)((1 - Math.pow((worldArea-riverCount)/worldArea,1))*100)) {
 			//Determine width
 			riverWidth = (int)(Math.random() * 100);
 			if(riverWidth > 91)
-				riverWidth = (int)(w * 0.15);
+				riverWidth = (int)(worldSizeX * 0.15);
 			else if(riverWidth > 65)
-				riverWidth = (int)(w * 0.10);
+				riverWidth = (int)(worldSizeX * 0.10);
 			else
-				riverWidth = (int)(w * 0.05);
+				riverWidth = (int)(worldSizeX * 0.05);
 			//Determine starting coordinate and hemisphere
-			randX = (int)(Math.random() * w);
-			randY = (int)(Math.random() * h);
-			if(randY < h/2) {
+			randX = (int)(Math.random() * worldSizeX);
+			randY = (int)(Math.random() * worldSizeY);
+			if(randY < worldSizeY/2) {
 				randY = (int)(Math.random() * 100);
-				randY = ((100-randY)/400)* h;
+				randY = ((100-randY)/400)* worldSizeY;
 				natFlow = "North";
 				curFlow = "North";
 			}
 			else {
 				randY = (int)(Math.random() * 100);
-				randY = ((300+randY)/400) * h;
+				randY = ((300+randY)/400) * worldSizeY;
 				natFlow = "South";
 				curFlow = "South";
 			}
 			//Determine length and path
-			if(randX + riverWidth +1 > w) 
+			if(randX + riverWidth +1 > worldSizeX) 
 				randX = randX - riverWidth;
 			if(randX - riverWidth - 1 < 0)
 				randX = randX + riverWidth;
-			if(randY + riverWidth +1 > h) 
+			if(randY + riverWidth +1 > worldSizeY) 
 				randY = randY - riverWidth;
 			if(randY - riverWidth - 1 < 0)
 				randY = randY + riverWidth;
@@ -85,7 +97,7 @@ public class GameWorld {
 				//Clearance check
 				if(curFlow.equals("North") || curFlow.equals("South")) {
 					for(clearanceCheck = 0; clearanceCheck < riverWidth; clearanceCheck++) {
-						if(randX + clearanceCheck < w && randX > -1 && randY < h && randY > -1) {
+						if(randX + clearanceCheck < worldSizeX && randX > -1 && randY < worldSizeY && randY > -1) {
 							if(World[randX + clearanceCheck][randY] != null) {
 								if(World[randX + clearanceCheck][randY].GetIdentity().equals("Mountain")) {
 									flowStop = 1;
@@ -98,7 +110,7 @@ public class GameWorld {
 					}
 				}else {
 					for(clearanceCheck = 0; clearanceCheck < riverWidth; clearanceCheck++) {
-						if(randX < w && randX > -1 && randY + clearanceCheck  < h && randY > -1) {
+						if(randX < worldSizeX && randX > -1 && randY + clearanceCheck  < worldSizeY && randY > -1) {
 						if(World[randX + clearanceCheck][randY] != null) {
 							if(World[randX][randY + clearanceCheck].GetIdentity().equals("Mountain")) {
 								flowStop = 1;
@@ -110,21 +122,21 @@ public class GameWorld {
 						}
 					}
 				}
-				r = r + riverWidth;
+				riverCount = riverCount + riverWidth;
 				if(curFlow.equals("North"))
-					if(randY + 1 >= h || randX + riverWidth >= w)
+					if(randY + 1 >= worldSizeY || randX + riverWidth >= worldSizeX)
 						flowStop = 1;
 					randY++;
 				if(curFlow.equals("South"))
-					if(randY - 1 <= -1 || randX + riverWidth >= w)
+					if(randY - 1 <= -1 || randX + riverWidth >= worldSizeX)
 						flowStop = 1;
 					randY--;
 				if(curFlow.equals("East"))
-					if(randX + 1 >= w || randY + riverWidth >= h)
+					if(randX + 1 >= worldSizeX || randY + riverWidth >= worldSizeY)
 						flowStop = 1;
 					randX++;
 				if(curFlow.equals("West"))
-					if(randX - 1 <= -1 || randY + riverWidth >= h)
+					if(randX - 1 <= -1 || randY + riverWidth >= worldSizeY)
 						flowStop = 1;
 					randY--;
 				if(flowStop == 1)
@@ -167,30 +179,30 @@ public class GameWorld {
 			if(flowStop == 2) {
 				for(int i = 0; i < riverWidth; i++) {
 					for(int j = 0; j < riverWidth - i; j++) {
-						if(randX+i < w && randY + j < h) {
+						if(randX+i < worldSizeX && randY + j < worldSizeY) {
 							if(World[randX+i][randY+j] == null) {
-								r++;
+								riverCount++;
 								World[randX+i][randY+j] = new Water();
 								World[randX+i][randY+j].SetGridLocation(randX+i, randY+j);
 							}
 						}
-						if(randX+i < w && randY - j > 0) {
+						if(randX+i < worldSizeX && randY - j > 0) {
 							if(World[randX+i][randY-j] == null) {
-								r++;
+								riverCount++;
 								World[randX+i][randY-j] = new Water();
 								World[randX+i][randY-j].SetGridLocation(randX+i, randY-j);
 							}
 						}
-						if(randX-i > 0 && randY + j < h) {
+						if(randX-i > 0 && randY + j < worldSizeY) {
 							if(World[randX-i][randY+j] == null) {
-								r++;
+								riverCount++;
 								World[randX-i][randY+j] = new Water();
 								World[randX-i][randY+j].SetGridLocation(randX-i, randY+j);
 							}
 						}
 						if(randX-i > 0 && randY - j > 0) {
 							if(World[randX-i][randY-j] == null) {
-								r++;
+								riverCount++;
 								World[randX-i][randY-j] = new Water();
 								World[randX-i][randY-j].SetGridLocation(randX-i, randY-j);
 							}
@@ -201,17 +213,17 @@ public class GameWorld {
 			riverRoll = (int)(Math.random() * 100);
 		} //River generation done
 		//Fill remains with soil
-		for(int i = 0; i < w; i++) {
-			for(int j = 0; j < h; j++) {
+		for(int i = 0; i < worldSizeX; i++) {
+			for(int j = 0; j < worldSizeY; j++) {
 				if(World[i][j] == null) {
 						//I know this is disgusting but bear with me
-					if(i+1 < w && World[i+1][j] != null && World[i+1][j].GetIdentity().equals("Water")) {
+					if(i+1 < worldSizeX && World[i+1][j] != null && World[i+1][j].GetIdentity().equals("Water")) {
 						World[i][j] = new Grass();
 						World[i][j].SetGridLocation(i, j);
 					} else if(i-1 > 0 && World[i-1][j] != null && World[i-1][j].GetIdentity().equals("Water")) {
 						World[i][j] = new Grass();
 						World[i][j].SetGridLocation(i, j);
-					}else if(j+1 < h && World[i][j+1] != null && World[i][j+1].GetIdentity().equals("Water")) {
+					}else if(j+1 < worldSizeY && World[i][j+1] != null && World[i][j+1].GetIdentity().equals("Water")) {
 						World[i][j] = new Grass();
 						World[i][j].SetGridLocation(i, j);
 					}else if(j-1 > 0 && World[i][j-1] != null && World[i][j-1].GetIdentity().equals("Water")) {
@@ -225,19 +237,7 @@ public class GameWorld {
 			}
 		}
 		
-	}
 	
-	//populates the game world with tiles
-	public void initialize() {
-		String worldSeed = Reader.readStringFromFile("tiles.txt");
-		for(int y = 0; y < worldSizeY; y++) {
-			for(int x = 0; x < worldSizeX; x++) {
-					World[x][worldSizeY - y - 1] = getTileFromChar(worldSeed.charAt(x + (y*worldSizeX)));
-					World[x][worldSizeY - y - 1].SetGridLocation(x, worldSizeY - y - 1);
-			}
-		}
-		initializeEntities();
-		initialized = true;
 	}
 	
 	private Tile getTileFromChar(char tileChar) {
