@@ -34,7 +34,7 @@ public class GameWorld {
 				randX = (int)(Math.random() * w);
 				randY = (int)(Math.random() * h);
 				Mount = new MountainGrid(World,World[randX][randY],n,m,1,w,h);
-				World = Mount.Mountainize().map;
+				World = Mount.Mountainize(randX, randY).map;
 				m = Mount.m;
 			}
 		}

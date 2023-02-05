@@ -22,9 +22,9 @@ public class MountainGrid {
 		y = provY;
 	}
 	
-	public MountainGrid Mountainize() {
-		int holdX = start.gridX;
-		int holdY = start.gridY;
+	public MountainGrid Mountainize(int gridX, int gridY) {
+		int holdX = gridX;
+		int holdY = gridY;
 		this.start = new Mountain();
 		this.start.SetGridLocation(holdX, holdY);
 		this.m++;
@@ -32,74 +32,74 @@ public class MountainGrid {
 		
 		//Mountainize N
 		if(DiceRollerPF.RollDice(100, (int)((1-Math.pow((this.n-this.m)/this.n, this.o))*100))){
-			if(copy.start.gridY < copy.y) {
-				if(!copy.map[copy.start.gridX][copy.start.gridY + 1].GetIdentity().equals("Mountain")) {
-					copy.start = copy.map[copy.start.gridX][copy.start.gridY + 1];
-					copy = copy.Mountainize();
+			if(holdY < copy.y) {
+				if(!copy.map[holdX][holdY + 1].GetIdentity().equals("Mountain")) {
+					copy.start = copy.map[holdX][holdY + 1];
+					copy = copy.Mountainize(holdX, holdY+1);
 				}
 			}	
 		}
 		
 		//Mountainize NE
 		if(DiceRollerPF.RollDice(100, (int)((1-Math.pow((this.n-this.m)/this.n, this.o))*100))){
-			if(copy.start.gridY < copy.y && copy.start.gridX < copy.x) {
-				if(!copy.map[copy.start.gridX+1][copy.start.gridY + 1].GetIdentity().equals("Mountain")) {
-					copy.start = copy.map[copy.start.gridX + 1][copy.start.gridY + 1];
-					copy = copy.Mountainize();
+			if(holdY < copy.y && holdX < copy.x) {
+				if(!copy.map[holdX+1][holdY + 1].GetIdentity().equals("Mountain")) {
+					copy.start = copy.map[holdX + 1][holdY + 1];
+					copy = copy.Mountainize(holdX+1,holdY+1);
 				}
 			}	
 		}
 		//Mountainize E
 		if(DiceRollerPF.RollDice(100, (int)((1-Math.pow((this.n-this.m)/this.n, this.o))*100))){
-			if(copy.start.gridX < copy.x) {
-				if(!copy.map[copy.start.gridX+1][copy.start.gridY].GetIdentity().equals("Mountain")) {
-					copy.start = copy.map[copy.start.gridX + 1][copy.start.gridY];
-					copy = copy.Mountainize();
+			if(holdX < copy.x) {
+				if(!copy.map[holdX+1][holdY].GetIdentity().equals("Mountain")) {
+					copy.start = copy.map[holdX + 1][holdY];
+					copy = copy.Mountainize(holdX+1,holdY);
 				}
 			}	
 		}
 		//Mountainize SE
 		if(DiceRollerPF.RollDice(100, (int)((1-Math.pow((this.n-this.m)/this.n, this.o))*100))){
-			if(copy.start.gridY > 0 && copy.start.gridX < copy.x) {
-				if(!copy.map[copy.start.gridX+1][copy.start.gridY - 1].GetIdentity().equals("Mountain")) {
-					copy.start = copy.map[copy.start.gridX + 1][copy.start.gridY + 1];
-					copy = copy.Mountainize();
+			if(holdY > 0 && holdX < copy.x) {
+				if(!copy.map[holdX+1][holdY - 1].GetIdentity().equals("Mountain")) {
+					copy.start = copy.map[holdX + 1][holdY + 1];
+					copy = copy.Mountainize(holdX+1, holdY+1);
 				}
 			}	
 		}
 		//Mountainize S
 		if(DiceRollerPF.RollDice(100, (int)((1-Math.pow((this.n-this.m)/this.n, this.o))*100))){
-			if(copy.start.gridY > 0) {
-				if(!copy.map[copy.start.gridX][copy.start.gridY - 1].GetIdentity().equals("Mountain")) {
-					copy.start = copy.map[copy.start.gridX][copy.start.gridY - 1];
-					copy = copy.Mountainize();
+			if(holdY > 0) {
+				if(!copy.map[holdX][holdY - 1].GetIdentity().equals("Mountain")) {
+					copy.start = copy.map[holdX][holdY - 1];
+					copy = copy.Mountainize(holdX, holdY-1);
 				}
 			}	
 		}
 		//Mountainize SW
 		if(DiceRollerPF.RollDice(100, (int)((1-Math.pow((this.n-this.m)/this.n, this.o))*100))){
-			if(copy.start.gridY > 0 && copy.start.gridX > 0) {
-				if(!copy.map[copy.start.gridX - 1][copy.start.gridY - 1].GetIdentity().equals("Mountain")) {
-					copy.start = copy.map[copy.start.gridX - 1][copy.start.gridY - 1];
-					copy = copy.Mountainize();
+			if(holdY > 0 && holdX > 0) {
+				if(!copy.map[holdX - 1][holdY - 1].GetIdentity().equals("Mountain")) {
+					copy.start = copy.map[holdX - 1][holdY - 1];
+					copy = copy.Mountainize(holdX-1, holdY-1);
 				}
 			}	
 		}
 		//Mountainize W
 		if(DiceRollerPF.RollDice(100, (int)((1-Math.pow((this.n-this.m)/this.n, this.o))*100))){
-			if(copy.start.gridX > 0) {
-				if(!copy.map[copy.start.gridX - 1][copy.start.gridY].GetIdentity().equals("Mountain")) {
-					copy.start = copy.map[copy.start.gridX - 1][copy.start.gridY];
-					copy = copy.Mountainize();
+			if(holdX > 0) {
+				if(!copy.map[holdX - 1][holdY].GetIdentity().equals("Mountain")) {
+					copy.start = copy.map[holdX - 1][holdY];
+					copy = copy.Mountainize(holdX-1, holdY);
 				}
 			}	
 		}
 		//Mountainize NW
 		if(DiceRollerPF.RollDice(100, (int)((1-Math.pow((this.n-this.m)/this.n, this.o))*100))){
-			if(copy.start.gridY > 0 && copy.start.gridX < copy.x) {
-				if(!copy.map[copy.start.gridX - 1][copy.start.gridY - 1].GetIdentity().equals("Mountain")) {
-					copy.start = copy.map[copy.start.gridX - 1][copy.start.gridY + 1];
-					copy = copy.Mountainize();
+			if(holdY > 0 && holdX < copy.x) {
+				if(!copy.map[holdX - 1][holdY - 1].GetIdentity().equals("Mountain")) {
+					copy.start = copy.map[holdX - 1][holdY + 1];
+					copy = copy.Mountainize(holdX-1, holdY+1);
 				}
 			}	
 		}
