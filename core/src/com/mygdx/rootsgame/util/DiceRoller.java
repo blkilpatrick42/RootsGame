@@ -9,4 +9,9 @@ public class DiceRoller {
 		int randomNum = rand.nextInt(sides) + 1;
 		return randomNum == 1;
 	}
+	
+	public static int pickInt(int options) {
+		int randomNum = rand.nextInt(options) + 1;
+		return randomNum;
+	}
 }

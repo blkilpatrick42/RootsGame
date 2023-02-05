@@ -1,6 +1,10 @@
 package com.mygdx.rootsgame;
 
 import com.mygdx.rootsgame.world.*;
+
+import java.util.Arrays;
+import java.lang.*;
+
 import com.mygdx.rootsgame.entities.*;
 
 public class GameWorld {
@@ -58,15 +62,23 @@ public class GameWorld {
 	}
 	
 	private Entity getEntityFromChar(char tileChar, int x, int y) {
-		if(tileChar == 'R')
-			return new RedFlower(x,y);
-	    if(tileChar == 'Y')
-			return new YellowFlower(x,y);
+		tileChar = Character.toUpperCase(tileChar);
+		switch(tileChar) {
+		case 'R':
+		case 'B':
+		case 'Y':
+		case 'P':
+		case 'O':
+		case 'G':
+		case 'W':
+			return new Flower (x,y,tileChar,1);
+		}
+
 	    if(tileChar == 'S')
 			return new ShrubSapling(x,y);
-	    if(tileChar == 'O')
+	    if(tileChar == 'M')
 			return new Rock(x,y);
-	    if (tileChar == 'P')
+	    if (tileChar == 'T')
 			return new PineSapling(x,y);
 	    if (tileChar == 'V')
 			return new Vine(x,y);

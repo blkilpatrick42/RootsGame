@@ -8,7 +8,7 @@ import com.mygdx.rootsgame.util.DiceRoller;
 import com.mygdx.rootsgame.world.*;
 
 public class VineFlowering extends Entity{
-	public static String identity = "VineFlowering";
+	public static String identity = "VineBlooming";
 	
 	public VineFlowering(int x, int y) {
 		aspect = new VisualAspect(Reader.GetSpriteSheet(),10,1,16);

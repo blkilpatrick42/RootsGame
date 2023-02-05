@@ -142,4 +142,15 @@ public abstract class WorldObject {
 			}
 			return num;
 		}
+		
+		//returns number of adjacent tiles with the given identity
+			public int AdjacentTilesHaveIdentity(String identity, int distance) {
+				int num = 0;
+				ArrayList<Tile> tiles = GetAdjacentTiles(distance);
+				for(Tile tile: tiles) {
+					if(tile != null && tile.GetIdentity().contains(identity))
+						num++;
+				}
+				return num;
+			}
 }
