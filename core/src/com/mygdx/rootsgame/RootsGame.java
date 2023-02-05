@@ -52,10 +52,52 @@ public class RootsGame extends ApplicationAdapter {
 		camera.setToOrtho(false, VIRTUAL_WIDTH, VIRTUAL_HEIGHT);
 		
 		Game.initialize();
+		
+		Gdx.graphics.setContinuousRendering(false);
+		Gdx.graphics.requestRendering();
 	}
+	
+	public long diff, start = System.currentTimeMillis(); //gets current system time in Millisecs
+	int slowSpeed = 1;
+	int mediumSpeed = 2;
+	int fastSpeed = 3;
+	public enum TimeSpeed{
+		slow,
+		medium,
+		fast
+	}
+	
+	public int GetTimeSpeed(TimeSpeed speed) {
+		int retSpeed = 0;
+		switch(speed) {
+			 case slow: retSpeed = slowSpeed;
+	         break;
+			 case medium: retSpeed = mediumSpeed;
+	         break;
+			 case fast:  retSpeed = fastSpeed;
+	         break;
+		}
+		return retSpeed;
+	}
+	
+	//Tick function, limits the program to the fps
+    public void sleep(int fps) {
+        if (fps > 0) {
+            diff = System.currentTimeMillis() - start;
+            long targetDelay = 1000 / fps;
+            if (diff < targetDelay) {
+                try {
+                    Thread.sleep(targetDelay - diff);
+                } catch (InterruptedException e) {
+                }
+            }
+            start = System.currentTimeMillis();
+        }
+    }
 
 	@Override
 	public void render () {
+		//sleep(GetTimeSpeed(TimeSpeed.slow));
 		camera.update();
 		batch.setProjectionMatrix(camera.combined);
 		
@@ -67,12 +109,14 @@ public class RootsGame extends ApplicationAdapter {
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		 
 		batch.begin();		
-		DrawGameWorld(Game);
+			DrawGameWorld(Game);
 		batch.end();
 		
 		//if time is unpaused, advance it at given speed
 		if(!timePaused) {
-			Game.AdvanceClock();		
+			Game.AdvanceClock();
+			sleep(GetTimeSpeed(TimeSpeed.slow));
+			Gdx.graphics.requestRendering();
 		}
 		
 		//enter toggles game pause
@@ -80,21 +124,26 @@ public class RootsGame extends ApplicationAdapter {
 			ToggleTimePaused();
 		
 		//if the game is paused, space advances the clock by one
-		if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)&& timePaused)
-			Game.AdvanceClock();			
+		if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)&& timePaused) {
+			Game.AdvanceClock();
+			Gdx.graphics.requestRendering();
+		}
 	}
 	
 	public void DrawGameWorld(GameWorld gameWorld) {
+		
 		for(Tile[] tiles: gameWorld.World) {
 			for(Tile tile: tiles) {
 				//draw ground tile
-				tile.aspect.localSprite.draw(batch);
 				tile.aspect.setPos(tile.gridX, tile.gridY, 16);
+				tile.aspect.localSprite.draw(batch);
+				
 				
 				//draw entity on top of the ground tile
 				if(tile.surfaceEntity != null) {
-					tile.surfaceEntity.aspect.localSprite.draw(batch);
 					tile.surfaceEntity.aspect.setPos(tile.gridX, tile.gridY, 16);
+					tile.surfaceEntity.aspect.localSprite.draw(batch);
+					
 				}
 			}
 		}		
