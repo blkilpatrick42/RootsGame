@@ -18,8 +18,8 @@ public class Grass extends Tile {
 	public void ExecuteRules() {
 		int numFlowers = AdjacentTilesHaveEntity(Flower.identity);
 		int numWaters = AdjacentTilesHaveIdentity(Water.identity);
-		int chanceModifier = 10 - numFlowers;
-		int liveChanceModifier = 2 + numWaters*3;
+		int chanceModifier = 9 - numFlowers;
+		int liveChanceModifier = 8 + numWaters*5;
 		
 		//get adjacent tiles
 		Tile adjacentNorth = GetAdjacentTile(TileDir.north);
@@ -33,6 +33,7 @@ public class Grass extends Tile {
 		
 		//model grass growth to adjacent tiles
 		int soilGrowthPrecedence = 1;
+		if(age % 7 == 0) {
 		if(adjacentNorth != null && adjacentNorth.GetIdentity().contains(Soil.identity)) {
 		   if(DiceRoller.RollDice(chanceModifier)) {
 			   Grass newGrassTile = new Grass();
@@ -90,14 +91,15 @@ public class Grass extends Tile {
 			}
 		}
 		
-		//model grass dying
 		
+		//model grass dying
 		int grassDeathPrecedence = 1;
 		if(DiceRoller.RollDice(liveChanceModifier)) {
 			//this grass dies, becomes soil again
 			Soil newSoilTile = new Soil();
 			newSoilTile.SetGridLocation(gridX, gridY);
 			RootsGame.Game.NextWorldState.SubmitFutureTile(grassDeathPrecedence, newSoilTile, gridX, gridY);
+		}
 		}
 		
 	}
