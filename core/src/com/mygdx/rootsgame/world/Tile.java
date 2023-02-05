@@ -79,7 +79,7 @@ public abstract class Tile extends WorldObject{
 	
 	public void ExecuteRules() {
 		int numFlowers = AdjacentTilesHaveEntity(Flower.identity);
-		int numWaters = AdjacentTilesHaveIdentity(Water.identity);
+		int numWaters = AdjacentTilesHaveIdentity(Water.identity, 3);
 		int flowerGrowthPrecedence = 1;
 		
 		//count how many adjacent tiles of each color
